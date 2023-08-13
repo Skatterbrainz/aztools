@@ -1,4 +1,4 @@
-function Get-AztStorageUsage {
+function Get-AzToolsStorageUsage {
 	<#
 	.SYNOPSIS
 		Get Azure Storage Account summary information
@@ -12,9 +12,9 @@ function Get-AztStorageUsage {
 		Optional. Limit search to either Current Subscription or All Subscription (within the tenant)
 		Default = CurrentSubscription
 	.EXAMPLE
-		Get-AztStorageUsage -Scope AllSubscriptions
+		Get-AzToolsStorageUsage -Scope AllSubscriptions
 	.EXAMPLE
-		Get-AztStorageUsage -Name "sa123456xyz"
+		Get-AzToolsStorageUsage -Name "sa123456xyz"
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -24,7 +24,7 @@ function Get-AztStorageUsage {
 		[parameter()][string][ValidateSet('CurrentSubscription','AllSubscriptions')]$Scope = 'CurrentSubscription'
 	)
 	if ($SelectContext) {
-		Switch-AztContext
+		Switch-AzToolsContext
 	}
 	try {
 		$accounts = @()
