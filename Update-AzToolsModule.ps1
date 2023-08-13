@@ -11,6 +11,10 @@ function Update-AzToolsModule {
 		Default (if not used) is to show current and latest versions for comparison only (no changes/updates applied)
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
+	.EXAMPLE
+		Update-AzToolsModule -Name ExchangeOnlineManagement
+	.EXAMPLE
+		Update-AzToolsModule -Name ExchangeOnlineManagement -UpdateModule
 	.NOTES
 		This function is by Matthew Dowst, I just made miniscule tweaks to fit this module
 	#>
