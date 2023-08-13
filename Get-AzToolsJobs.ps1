@@ -1,11 +1,11 @@
-function Get-AztJobs {
+function Get-AzToolsJobs {
 	<#
 	.SYNOPSIS
 		Get Azure Automation Account Runbook Jobs
 	.DESCRIPTION
 		Get Azure Automation Account Runbook Jobs.
 	.PARAMETER SelectContext
-		Prompt to select the Azure context (tenant/subscription)
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.PARAMETER JobStatus
 		Optional. Job status: Activating, Completed, Failed, Queued, Resuming, Running, Starting, Stopped, Stopping, Suspended, Suspending
 		Default = Running
@@ -20,9 +20,9 @@ function Get-AztJobs {
 	.PARAMETER ShowOutput
 		Optional. Send job output to Get-AztJobOutput for more details per each job
 	.EXAMPLE
-		Get-AztJobs -JobStatus "Failed"
+		Get-AzToolsJobs -JobStatus "Failed"
 	.EXAMPLE
-		Get-AztJobs -StartTime "8/1/2023 12:00" -EndTime "8/2/2023 8:00" -RunbookName "MyRunbook" -HybridWorkerName "HwGroup1"
+		Get-AzToolsJobs -StartTime "8/1/2023 12:00" -EndTime "8/2/2023 8:00" -RunbookName "MyRunbook" -HybridWorkerName "HwGroup1"
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -37,7 +37,7 @@ function Get-AztJobs {
 		[parameter()][switch]$ShowOutput
 	)
 	if ($SelectContext) {
-		Switch-AztContext
+		Switch-AzToolsContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription

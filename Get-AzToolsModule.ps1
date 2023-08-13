@@ -1,13 +1,13 @@
-function Get-AztModules {
+function Get-AzToolsModule {
 	<#
 	.SYNOPSIS
 		Get Azure Automation Account Modules
 	.DESCRIPTION
 		Returns module names and versions for a selected Azure Automation Account
 	.PARAMETER SelectContext
-		Prompt to select the Azure context (tenant/subscription)
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
-		Get-AztModules
+		Get-AzToolsModule
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -15,7 +15,7 @@ function Get-AztModules {
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) {
-		Switch-AztContext
+		Switch-AzToolsContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
@@ -24,20 +24,9 @@ function Get-AztModules {
 		}
 	}
 	if ($global:AztoolsLastSubscription) {
-		if (!$global:AzToolsLastResourceGroup -or $SelectContext) {
-			$rglist = Get-AzResourceGroup
-			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
-				$global:AzToolsLastResourceGroup = $rg
-			}
-		}
+		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
-			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) {
-				if ($aalist = Get-AzAutomationAccount -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName) {
-					if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-GridView -Title "Select Automation Account" -OutputMode Single) {
-						$global:AzToolsLastAutomationAccount = $aa
-					}
-				}
-			}
+			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
 				Get-AzAutomationModule -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName -AutomationAccountName $global:AzToolsLastAutomationAccount.AutomationAccountName |

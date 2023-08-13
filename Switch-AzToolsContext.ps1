@@ -1,4 +1,4 @@
-function Switch-AztContext {
+function Switch-AzToolsContext {
 	<#
 	.SYNOPSIS
 		Switch between Azure Contexts
@@ -9,7 +9,7 @@ function Switch-AztContext {
 	.EXAMPLE
 		Switch-AztContext
 	.EXAMPLE
-		Switch-AztContext -name "contoso"
+		Switch-AzToolsContext -name "contoso"
 	.NOTES
 	#>
 	[CmdletBinding()]

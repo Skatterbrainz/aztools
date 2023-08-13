@@ -5,7 +5,7 @@ function Get-AztVmByTag {
 	.DESCRIPTION
 		Get Azure Virtual Machines by searching on Tag name and value
 	.PARAMETER SelectContext
-		Prompt to select the Azure context (tenant/subscription)
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.PARAMETER TagName
 		Required. Tag name to search for
 	.PARAMETER TagValue

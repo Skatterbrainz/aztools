@@ -1,11 +1,15 @@
-function Get-AztJobOutput {
+function Get-AzToolsJobOutput {
 	<#
 	.SYNOPSIS
+		Get Azure Automation runbook job output
 	.DESCRIPTION
+		Get Azure Automation runbook job output
 	.PARAMETER JobId
+		Required. Automation Job ID
 	.PARAMETER SelectContext
-		Prompt to select the Azure context (tenant/subscription)
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
+		Get-AztJobOutput -JobID abcdbf6d-1234-abcd-efgh-a5633676041c
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -14,7 +18,7 @@ function Get-AztJobOutput {
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) {
-		Switch-AztContext
+		Switch-AzToolsContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
@@ -23,20 +27,9 @@ function Get-AztJobOutput {
 		}
 	}
 	if ($global:AztoolsLastSubscription) {
-		if (!$global:AzToolsLastResourceGroup -or $SelectContext) {
-			$rglist = Get-AzResourceGroup
-			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
-				$global:AzToolsLastResourceGroup = $rg
-			}
-		}
-		if ($global:AzToolsLastResourceGroup) {
-			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) {
-				if ($aalist = Get-AzAutomationAccount -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName) {
-					if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-GridView -Title "Select Automation Account" -OutputMode Single) {
-						$global:AzToolsLastAutomationAccount = $aa
-					}
-				}
-			}
+		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
+		if ($global:AzToolsLastResourceGroup) { 
+			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
