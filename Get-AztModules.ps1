@@ -1,11 +1,10 @@
-function Get-AzAaJobOutput {
+function Get-AztModules {
 	[CmdletBinding()]
 	param (
-		[parameter(Mandatory)][string]$JobId,
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) {
-		Switch-AzContext
+		Switch-AztContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
@@ -30,31 +29,8 @@ function Get-AzAaJobOutput {
 			}
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
-				$params = @{
-					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
-					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-					Id = $JobId
-					Stream = 'Any'
-				}
-				$joboutput = Get-AzAutomationJobOutput @params | Where-Object {$_.Summary}
-				if ($joboutput.Count -gt 0) {
-					Write-Host "$($joboutput.Count) job output records found for Job: $JobId" -ForegroundColor Cyan
-					$index = 1; $total = $joboutput.Count
-					foreach ($item in $joboutput) {
-						Write-Host "## Job output record: $index of $total"
-						$params = @{
-							JobId = $JobId
-							Id = $item.StreamRecordId
-							ResourceGroupName = $item.ResourceGroupName
-							AutomationAccountName = $item.AutomationAccountName
-						}
-						Get-AzAutomationJobOutputRecord @params
-						# Fields: JobId, StreamRecordId, Time, Summary, Value, Type, ResourceGroupName, AutomationAccountName
-						$index++
-					}
-				} else {
-					Write-Host "No job output records found which contain Summary data" -ForegroundColor Magenta
-				}
+				Get-AzAutomationModule -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName -AutomationAccountName $global:AzToolsLastAutomationAccount.AutomationAccountName |
+					Select Name,Version | Sort-Object Name
 			}
 		}
 	}

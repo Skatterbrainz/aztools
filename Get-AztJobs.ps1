@@ -1,13 +1,17 @@
-function Export-AzAaRunbooks {
+function Get-AztJobs {
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$All,
-		[parameter()][string]$Filter = "*",
-		[parameter()][string]$Path = "$($env:USERPROFILE)\desktop"
+		[parameter()][string]
+		[ValidateSet('Activating','Completed','Failed','Queued','Resuming','Running','Starting','Stopped','Stopping','Suspended','Suspending')]$JobStatus = 'Running',
+		[parameter()][datetime]$StartTime,
+		[parameter()][datetime]$EndTime,
+		[parameter()][string]$RunbookName,
+		[parameter()][string]$HybridWorkerName,
+		[parameter()][switch]$ShowOutput
 	)
 	if ($SelectContext) {
-		Switch-AzContext
+		Switch-AztContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
@@ -33,25 +37,26 @@ function Export-AzAaRunbooks {
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
+					Status = $JobStatus
 					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				}
-				$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name | Select-Object Name,RunbookType,Location,State,LastModifiedTime
-				if ($Filter -ne "*") {
-					$runbooks = $runbooks | Where-Object { $_.Name -like $Filter }
-				}
-				foreach ($runbook in $runbooks) {
-					Write-Host "Exporting: $(Join-Path $Path $runbook.Name)" -ForegroundColor Cyan
-					$params = @{
-						Name = $runbook.Name
-						OutputFolder = $Path
-						ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
-						AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-						Force = $True
+				if ($StartTime) { $params['StartTime'] = $StartTime }
+				if ($EndTime) { $params['EndTime'] = $EndTime }
+				$results = Get-AzAutomationJob @params
+				# Fields: JobId,CreationTime,Status,StatusDetails,StartTime,EndTime,Exception,
+				#   JobParameters,RunbookName,HybridWorker,StartedBy,
+				#   LastModifiedTime,LastStatusModifiedTime,ResourceGroupName,AutomationAccountName
+				if ($HybridWorkerName) {
+					if ($RunbookName) {
+						$results = $results | Where-Object {$_.HybridWorker -eq $HybridWorkerName -and $_.RunbookName -eq $RunbookName}
+					} else {
+						$results = $results | Where-Object {$_.HybridWorker -eq $HybridWorkerName}
 					}
-					$null = Export-AzAutomationRunbook @params
+				} elseif ($RunbookName) {
+					$results = $results | Where-Object {$_.RunbookName -eq $RunbookName}
 				}
-				Write-Host "$($runbooks.Count) runbooks were exported to: $Path" -ForegroundColor Green
+				$results
 			}
 		}
 	}

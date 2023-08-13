@@ -1,4 +1,4 @@
-function Switch-AzContext {
+function Switch-AztContext {
 	[CmdletBinding()]
 	param (
 		[parameter()][string]$Name = ""

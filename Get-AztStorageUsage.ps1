@@ -1,9 +1,13 @@
-function Get-AzStorageUsage {
+function Get-AztStorageUsage {
 	[CmdletBinding()]
 	param (
 		[parameter()][string]$Name = "",
+		[parameter()][switch]$SelectContext,
 		[parameter()][string][ValidateSet('CurrentSubscription','AllSubscriptions')]$Scope = 'CurrentSubscription'
 	)
+	if ($SelectContext) {
+		Switch-AztContext
+	}
 	try {
 		$accounts = @()
 		$context = Get-AzContext

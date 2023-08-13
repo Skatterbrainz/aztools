@@ -1,4 +1,4 @@
-function Get-AzAaJobs {
+function Get-AztRunbookJobs {
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
@@ -7,11 +7,11 @@ function Get-AzAaJobs {
 		[parameter()][datetime]$StartTime,
 		[parameter()][datetime]$EndTime,
 		[parameter()][string]$RunbookName,
-		[parameter()][string]$HybridWorkerName,
-		[parameter()][switch]$ShowOutput
+		[parameter()][switch]$ShowOutput,
+		[parameter()][int]$ShowLimit = 10
 	)
 	if ($SelectContext) {
-		Switch-AzContext
+		Switch-AztContext
 	}
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
@@ -37,26 +37,35 @@ function Get-AzAaJobs {
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
-					Status = $JobStatus
 					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				}
+				$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name | Select-Object Name,RunbookType,Location,State,LastModifiedTime
+				if (!$global:AztoolsLastRunbook -or $SelectContext) {
+					if ($runbook = $runbooks | Out-GridView -Title "Select Runbook" -OutputMode Single) {
+						$global:AztoolsLastRunbook = $runbook
+					}
+				}
+				$params = @{
+					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
+					RunbookName = $($global:AztoolsLastRunbook).Name
+				}
 				if ($StartTime) { $params['StartTime'] = $StartTime }
 				if ($EndTime) { $params['EndTime'] = $EndTime }
-				$results = Get-AzAutomationJob @params
-				# Fields: JobId,CreationTime,Status,StatusDetails,StartTime,EndTime,Exception,
-				#   JobParameters,RunbookName,HybridWorker,StartedBy,
-				#   LastModifiedTime,LastStatusModifiedTime,ResourceGroupName,AutomationAccountName
-				if ($HybridWorkerName) {
-					if ($RunbookName) {
-						$results = $results | Where-Object {$_.HybridWorker -eq $HybridWorkerName -and $_.RunbookName -eq $RunbookName}
+				if ($JobStatus) { $params['Status'] = $JobStatus }
+				Write-Host "Requesting job history for runbook: $($($global:AztoolsLastRunbook).Name)" -ForegroundColor Cyan
+				$results = Get-AzAutomationJob @params | Sort-Object Time -Descending
+				if ($ShowOutput) {
+					Write-Host "Returned $($results.Count) jobs (limiting to $ShowLimit latest jobs)" -ForegroundColor Cyan
+					if ($ShowLimit -gt 0) {
+						$results | Select-Object -First $ShowLimit | Foreach-Object { Get-AztJobOutput -JobId $_.JobId }
 					} else {
-						$results = $results | Where-Object {$_.HybridWorker -eq $HybridWorkerName}
+						$results | Foreach-Object { Get-AztJobOutput -JobId $_.JobId }
 					}
-				} elseif ($RunbookName) {
-					$results = $results | Where-Object {$_.RunbookName -eq $RunbookName}
+				} else {
+					$results
 				}
-				$results
 			}
 		}
 	}
