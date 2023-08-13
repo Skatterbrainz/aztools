@@ -1,4 +1,17 @@
 function Switch-AztContext {
+	<#
+	.SYNOPSIS
+		Switch between Azure Contexts
+	.DESCRIPTION
+		Switch between Azure contexts
+	.PARAMETER Name
+		Name of Context. If omitted, it will display a GridView to choose the target context
+	.EXAMPLE
+		Switch-AztContext
+	.EXAMPLE
+		Switch-AztContext -name "contoso"
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][string]$Name = ""

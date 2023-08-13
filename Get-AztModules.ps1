@@ -1,4 +1,15 @@
 function Get-AztModules {
+	<#
+	.SYNOPSIS
+		Get Azure Automation Account Modules
+	.DESCRIPTION
+		Returns module names and versions for a selected Azure Automation Account
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.EXAMPLE
+		Get-AztModules
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext

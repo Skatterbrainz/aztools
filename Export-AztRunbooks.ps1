@@ -1,4 +1,15 @@
 function Export-AztRunbooks {
+	<#
+	.SYNOPSIS
+	.DESCRIPTION
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER All
+	.PARAMETER Filter
+	.PARAMETER Path
+	.EXAMPLE
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,

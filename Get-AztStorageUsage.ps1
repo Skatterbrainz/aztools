@@ -1,4 +1,22 @@
 function Get-AztStorageUsage {
+	<#
+	.SYNOPSIS
+		Get Azure Storage Account summary information
+	.DESCRIPTION
+		Get Azure Storage Account container size and space used
+	.PARAMETER Name
+		Optional. Name of Storage Account
+	.PARAMETER SelectContext
+		Optional. Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER Scope
+		Optional. Limit search to either Current Subscription or All Subscription (within the tenant)
+		Default = CurrentSubscription
+	.EXAMPLE
+		Get-AztStorageUsage -Scope AllSubscriptions
+	.EXAMPLE
+		Get-AztStorageUsage -Name "sa123456xyz"
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][string]$Name = "",

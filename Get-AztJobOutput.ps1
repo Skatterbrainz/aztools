@@ -1,4 +1,13 @@
 function Get-AztJobOutput {
+	<#
+	.SYNOPSIS
+	.DESCRIPTION
+	.PARAMETER JobId
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.EXAMPLE
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter(Mandatory)][string]$JobId,

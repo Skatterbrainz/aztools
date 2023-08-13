@@ -1,9 +1,24 @@
 function Get-AztVmByTag {
+	<#
+	.SYNOPSIS
+		Get Azure Virtual Machines by searching on Tag name and value
+	.DESCRIPTION
+		Get Azure Virtual Machines by searching on Tag name and value
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER TagName
+		Required. Tag name to search for
+	.PARAMETER TagValue
+		Required. Value assigned to TagName to filter on
+	.EXAMPLE
+		Get-AztVmByTag -TagName "PatchGroup" -TagValue "Group2"
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
-		[parameter()][string]$TagName = 'PatchGroup',
-		[parameter()][string]$TagValue = 'Group1'
+		[parameter(Mandatory)][string]$TagName,
+		[parameter(Mandatory)][string]$TagValue
 	)
 	if ($SelectContext) {
 		Switch-AztContext

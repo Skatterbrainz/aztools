@@ -1,4 +1,21 @@
 function Get-AztRunbookJobs {
+	<#
+	.SYNOPSIS
+	.DESCRIPTION
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER JobStatus
+	.PARAMETER StartTime
+	.PARAMETER EndTime
+	.PARAMETER RunbookName
+	.PARAMETER ShowOutput
+	.PARAMETER ShowLimit
+	.EXAMPLE
+		Get-AztRunbookJobs -JobStatus Failed
+	.EXAMPLE
+		Get-AztRunbookJobs -JobStatus Failed -RunbookName "MyRunbook"
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,

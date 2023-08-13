@@ -1,4 +1,30 @@
 function Get-AztJobs {
+	<#
+	.SYNOPSIS
+		Get Azure Automation Account Runbook Jobs
+	.DESCRIPTION
+		Get Azure Automation Account Runbook Jobs.
+	.PARAMETER SelectContext
+		Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER JobStatus
+		Optional. Job status: Activating, Completed, Failed, Queued, Resuming, Running, Starting, Stopped, Stopping, Suspended, Suspending
+		Default = Running
+	.PARAMETER StartTime
+		Optional. Limit results to jobs which have a StartTime >= date/time value
+	.PARAMETER EndTime
+		Optional. Limit results to jobs which have a EndTime <= date/time value
+	.PARAMETER RunbookName
+		Optional. Limit results to jobs related to named Runbook
+	.PARAMETER HybridWorkerName
+		Optional. Limit results to jobs related to named HybridWorker (group)
+	.PARAMETER ShowOutput
+		Optional. Send job output to Get-AztJobOutput for more details per each job
+	.EXAMPLE
+		Get-AztJobs -JobStatus "Failed"
+	.EXAMPLE
+		Get-AztJobs -StartTime "8/1/2023 12:00" -EndTime "8/2/2023 8:00" -RunbookName "MyRunbook" -HybridWorkerName "HwGroup1"
+	.NOTES
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
