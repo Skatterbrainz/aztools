@@ -1,4 +1,4 @@
-function Get-AztVmByTag {
+function Get-AzToolsVmByTag {
 	<#
 	.SYNOPSIS
 		Get Azure Virtual Machines by searching on Tag name and value
@@ -11,7 +11,7 @@ function Get-AztVmByTag {
 	.PARAMETER TagValue
 		Required. Value assigned to TagName to filter on
 	.EXAMPLE
-		Get-AztVmByTag -TagName "PatchGroup" -TagValue "Group2"
+		Get-AzToolsVmByTag -TagName "PatchGroup" -TagValue "Group2"
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -21,7 +21,7 @@ function Get-AztVmByTag {
 		[parameter(Mandatory)][string]$TagValue
 	)
 	if ($SelectContext) {
-		Switch-AztContext
+		Switch-AzToolsContext
 	}
 	[array]$azsubs = (Get-AzSubscription)
 	foreach ($azsub in $azsubs) {
