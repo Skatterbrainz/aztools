@@ -17,9 +17,7 @@ function Get-AzToolsJobOutput {
 		[parameter(Mandatory)][string]$JobId,
 		[parameter()][switch]$SelectContext
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {

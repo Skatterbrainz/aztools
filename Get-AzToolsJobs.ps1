@@ -36,9 +36,7 @@ function Get-AzToolsJobs {
 		[parameter()][string]$HybridWorkerName,
 		[parameter()][switch]$ShowOutput
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {

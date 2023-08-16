@@ -27,9 +27,7 @@ function Export-AzToolsRunbooks {
 		[parameter()][string]$Filter = "*",
 		[parameter()][string]$Path = "$($env:USERPROFILE)\desktop"
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {

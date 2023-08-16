@@ -23,9 +23,7 @@ function Get-AzToolsStorageUsage {
 		[parameter()][switch]$SelectContext,
 		[parameter()][string][ValidateSet('CurrentSubscription','AllSubscriptions')]$Scope = 'CurrentSubscription'
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	try {
 		$accounts = @()
 		$context = Get-AzContext

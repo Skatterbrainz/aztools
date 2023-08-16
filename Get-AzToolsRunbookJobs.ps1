@@ -35,9 +35,7 @@ function Get-AzToolsRunbookJobs {
 		[parameter()][switch]$ShowOutput,
 		[parameter()][int]$ShowLimit = 10
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
