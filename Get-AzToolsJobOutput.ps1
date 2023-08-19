@@ -18,23 +18,23 @@ function Get-AzToolsJobOutput {
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
+	if (!$global:AzToolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
+			$global:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($global:AztoolsLastSubscription) {
+	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
-		if ($global:AzToolsLastResourceGroup) { 
+		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
-					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-					Id = $JobId
-					Stream = 'Any'
+					Id                    = $JobId
+					Stream                = 'Any'
 				}
 				$joboutput = Get-AzAutomationJobOutput @params | Where-Object {$_.Summary}
 				if ($joboutput.Count -gt 0) {
@@ -43,9 +43,9 @@ function Get-AzToolsJobOutput {
 					foreach ($item in $joboutput) {
 						Write-Host "## Job output record: $index of $total"
 						$params = @{
-							JobId = $JobId
-							Id = $item.StreamRecordId
-							ResourceGroupName = $item.ResourceGroupName
+							JobId                 = $JobId
+							Id                    = $item.StreamRecordId
+							ResourceGroupName     = $item.ResourceGroupName
 							AutomationAccountName = $item.AutomationAccountName
 						}
 						Get-AzAutomationJobOutputRecord @params

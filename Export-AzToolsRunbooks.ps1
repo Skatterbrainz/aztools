@@ -41,7 +41,7 @@ function Export-AzToolsRunbooks {
 			if ($global:AzToolsLastAutomationAccount) {
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
-					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				}
 				$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name | Select-Object Name,RunbookType,Location,State,LastModifiedTime
@@ -52,11 +52,11 @@ function Export-AzToolsRunbooks {
 					foreach ($runbook in $runbooks) {
 						Write-Host "Exporting: $(Join-Path $Path $runbook.Name)" -ForegroundColor Cyan
 						$params = @{
-							Name = $runbook.Name
-							OutputFolder = $Path
-							ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+							Name                  = $runbook.Name
+							OutputFolder          = $Path
+							ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 							AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-							Force = $True
+							Force                 = $True
 						}
 						$null = Export-AzAutomationRunbook @params
 					}

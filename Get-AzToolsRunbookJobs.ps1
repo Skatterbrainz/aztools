@@ -36,32 +36,32 @@ function Get-AzToolsRunbookJobs {
 		[parameter()][int]$ShowLimit = 10
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
+	if (!$global:AzToolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
+			$global:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($global:AztoolsLastSubscription) {
+	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
-					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				}
-				if (!$global:AztoolsLastRunbook -or $SelectContext) { Select-AzToolsAutomationRunbook }
-				if ($global:AztoolsLastRunbook) {
+				if (!$global:AzToolsLastRunbook -or $SelectContext) { Select-AzToolsAutomationRunbook }
+				if ($global:AzToolsLastRunbook) {
 					$params = @{
-						ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+						ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 						AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-						RunbookName = $($global:AztoolsLastRunbook).Name
+						RunbookName           = $($global:AzToolsLastRunbook).Name
 					}
 					if ($StartTime) { $params['StartTime'] = $StartTime }
-					if ($EndTime) { $params['EndTime'] = $EndTime }
-					if ($JobStatus) { $params['Status'] = $JobStatus }
+					if ($EndTime)   { $params['EndTime']   = $EndTime }
+					if ($JobStatus) { $params['Status']    = $JobStatus }
 					Write-Host "Requesting job history for runbook: $($($global:AztoolsLastRunbook).Name)" -ForegroundColor Cyan
 					$results = Get-AzAutomationJob @params | Sort-Object Time -Descending
 					if ($ShowOutput) {

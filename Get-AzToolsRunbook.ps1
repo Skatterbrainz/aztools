@@ -24,13 +24,13 @@ function Get-AzToolsRunbook {
 		[parameter()][string]$Filter = "*"
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$script:AztoolsLastSubscription -or $SelectContext) {
+	if (!$script:AzToolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$script:AztoolsLastSubscription = $azsub
+			$script:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($script:AztoolsLastSubscription) {
+	if ($script:AzToolsLastSubscription) {
 		if (!$script:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($script:AzToolsLastResourceGroup) {
 			if (!$script:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }

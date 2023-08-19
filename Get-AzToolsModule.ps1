@@ -18,10 +18,10 @@ function Get-AzToolsModule {
 	if (!$global:AztoolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
+			$global:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($global:AztoolsLastSubscription) {
+	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }

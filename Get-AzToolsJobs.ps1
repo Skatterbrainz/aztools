@@ -37,13 +37,13 @@ function Get-AzToolsJobs {
 		[parameter()][switch]$ShowOutput
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
+	if (!$global:AzToolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
+			$global:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($global:AztoolsLastSubscription) {
+	if ($script:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) {
 			$rglist = Get-AzResourceGroup
 			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
@@ -58,15 +58,15 @@ function Get-AzToolsJobs {
 					}
 				}
 			}
-			if ($global:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($AzToolsLastAutomationAccount.AutomationAccountName)"
+			if ($script:AzToolsLastAutomationAccount) {
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
 				$params = @{
-					Status = $JobStatus
-					ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+					Status                = $JobStatus
+					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				}
 				if ($StartTime) { $params['StartTime'] = $StartTime }
-				if ($EndTime) { $params['EndTime'] = $EndTime }
+				if ($EndTime)   { $params['EndTime']   = $EndTime }
 				$results = Get-AzAutomationJob @params
 				# Fields: JobId,CreationTime,Status,StatusDetails,StartTime,EndTime,Exception,
 				#   JobParameters,RunbookName,HybridWorker,StartedBy,

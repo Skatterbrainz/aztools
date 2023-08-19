@@ -25,9 +25,16 @@ function Switch-AzToolsContext {
 		if ($List) {
 			Get-AzContext -ListAvailable | Sort-Object Name
 		} else {
+			$curctx = (Get-AzContext)
 			$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-GridView -Title "Select Profile" -OutputMode Single
 			if ($ctx) {
+				if ($curctx.Name -ne $ctx.Name) {
+					$global:AzToolsLastResourceGroup = $null
+					$global:AzToolsLastAutomationAccount = $null
+					$global:AzToolsLastRunbook = $null
+				}
 				Write-Host "Setting active context to: $($ctx.Name)" -ForegroundColor Yellow
+				$global:AztoolsLastSubscription = $ctx.Subscription
 				Set-AzContext $ctx
 			}
 		}
@@ -35,8 +42,8 @@ function Switch-AzToolsContext {
 		$ctx = Get-AzContext -ListAvailable | Where-Object {$_.Name -eq $Name}
 		if ($ctx) {
 			Write-Host "Setting active context to: $($ctx.Name)" -ForegroundColor Yellow
+			$global:AztoolsLastSubscription = $ctx.Subscription
 			Set-AzContext $ctx
 		}
 	}
-	
 }

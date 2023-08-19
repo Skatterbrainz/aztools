@@ -24,13 +24,11 @@ function Update-AzToolsModule {
 		[parameter()][switch]$UpdateModule,
 		[parameter()][switch]$SelectContext
 	)
-	if ($SelectContext) {
-		Switch-AzToolsContext
-	}
+	if ($SelectContext) { Switch-AzToolsContext }
 	$params = @{
-		ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
+		ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
 		AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-		Name = $Name
+		Name        = $Name
 		ErrorAction = 'SilentlyContinue'
 	}
 	$aaModules = Get-AzAutomationModule @params

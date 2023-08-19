@@ -2,15 +2,15 @@ function Select-AzToolsResourceGroup {
 	param()
 	$rglist = Get-AzResourceGroup
 	if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
-		$global:AzToolsLastResourceGroup = $rg
+		$script:AzToolsLastResourceGroup = $rg
 	}
 }
 
 function Select-AzToolsAutomationAccount {
 	param ()
-	if ($aalist = Get-AzAutomationAccount -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName) {
+	if ($aalist = Get-AzAutomationAccount -ResourceGroupName $script:AzToolsLastResourceGroup.ResourceGroupName) {
 		if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-GridView -Title "Select Automation Account" -OutputMode Single) {
-			$global:AzToolsLastAutomationAccount = $aa
+			$script:AzToolsLastAutomationAccount = $aa
 		}
 	}
 }
@@ -20,7 +20,7 @@ function Select-AzToolsAutomationRunbook {
 	$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name | Select-Object Name,RunbookType,Location,State,LastModifiedTime
 	if (!$global:AztoolsLastRunbook -or $SelectContext) {
 		if ($runbook = $runbooks | Out-GridView -Title "Select Runbook" -OutputMode Single) {
-			$global:AztoolsLastRunbook = $runbook
+			$script:AztoolsLastRunbook = $runbook
 		}
 	}
 }
@@ -58,8 +58,8 @@ Function Get-ModuleVersionCheck {
 		[parameter(Mandatory=$true)][string]$MinimumVersion
 	)
 	$params = @{
-		ResourceGroupName = $global:AzToolsLastResourceGroup.ResourceGroupName
-		AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
+		ResourceGroupName = $script:AzToolsLastResourceGroup.ResourceGroupName
+		AutomationAccountName = $script:AzToolsLastAutomationAccount.AutomationAccountName
 		Name = $ModuleName
 		ErrorAction = 'SilentlyContinue'
 	}
@@ -73,9 +73,32 @@ function Get-AzToolsContext {
 		[pscustomobject]@{
 			Subscription   = (Get-AzContext).Subscription.Name
 			SubscriptionID = (Get-AzContext).Subscription.Id
-			ResourceGroupName = $($global:AzToolsLastResourceGroup | Select-Object -ExpandProperty ResourceGroupname)
-			AutomationAccount = $($global:AzToolsLastAutomationAccount | Select-Object -ExpandProperty AutomationAccountName)
+			ResourceGroupName = $($script:AzToolsLastResourceGroup | Select-Object -ExpandProperty ResourceGroupname)
+			AutomationAccount = $($script:AzToolsLastAutomationAccount | Select-Object -ExpandProperty AutomationAccountName)
 		}
 	)
 	$res | ConvertTo-Json
+}
+
+function Get-AzToolsLastContextItem {
+	[CmdletBinding()]
+	param (
+		[parameter(Mandatory)][string][ValidateSet('Subscription','ResourceGroup','AutomationAccount','StorageAccount')]$ItemType
+	)
+	$filename = "aztools_current_$($ItemType).json"
+	$filepath = Join-Path -Path "$($env:USERPROFILE)" -ChildPath "documents\$filename"
+	if (Test-Path $filepath) {
+		Get-Content -Path $filepath | ConvertFrom-Json
+	}
+}
+
+function Set-AzToolsLastContextItem {
+	[CmdletBinding()]
+	param (
+		[parameter(Mandatory)][string][ValidateSet('Subscription','ResourceGroup','AutomationAccount','StorageAccount')]$ItemType,
+		[parameter(Mandatory)]$Value
+	)
+	$filename = "aztools_current_$($ItemType).json"
+	$filepath = Join-Path -Path "$($env:USERPROFILE)" -ChildPath "documents\$filename"
+	$Value | ConvertTo-Json | Out-File -FilePath $filepath -Force
 }

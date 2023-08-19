@@ -19,13 +19,13 @@ function Import-AzToolsModule {
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
+	if (!$global:AzToolsLastSubscription -or $SelectContext) {
 		$azsubs = Get-AzSubscription
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
+			$global:AzToolsLastSubscription = $azsub
 		}
 	}
-	if ($global:AztoolsLastSubscription) {
+	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
@@ -48,7 +48,7 @@ function Import-AzToolsModule {
 			do {
 				try {
 					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-					Invoke-WebRequest -Uri $ModuleContentUrl -MaximumRedirection 0 -UseBasicParsing -ErrorAction Stop | Out-Null
+					$null = Invoke-WebRequest -Uri $ModuleContentUrl -MaximumRedirection 0 -UseBasicParsing -ErrorAction Stop
 				} catch {
 					$ModuleContentUrl = $_.Exception.Response.Headers.Location.AbsoluteUri
 				}
