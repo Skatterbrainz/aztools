@@ -1,9 +1,13 @@
 function Import-AzToolsModule {
 	<#
 	.DESCRIPTION
+		Import/Update module into Azure Automation Account
 	.PARAMETER ModuleName
+		Name of module in PS Gallery
 	.PARAMETER ModuleVersion
+		Version to be imported
 	.PARAMETER SelectContext
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
 		Import-AzToolsModules -ModuleName az.accounts -ModuleVersion 2.12.1
 	#>

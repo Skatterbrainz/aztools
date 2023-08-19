@@ -28,6 +28,7 @@ function Get-AzToolsVm {
 		[parameter()][string]$ExtensionName = ""
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
+	$currentContext = (Get-AzContext)
 	if ($AllSubscriptions) {
 		[array]$azsubs = (Get-AzSubscription)
 	} else {
@@ -38,5 +39,8 @@ function Get-AzToolsVm {
 		$null = Select-AzSubscription -Subscription $azsub
 		$machines = $null
 		[array](Get-AzVm -Status | Where-Object {$_.Tags[$TagName] -eq $TagValue})
+	}
+	if ($currentContext -ne (Get-AzContext)) {
+		$null = Set-AzContext $currentContext
 	}
 }
