@@ -21,11 +21,11 @@ function Get-AzToolsVm {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$AllSubscriptions,
-		[parameter()][string]$TagName = "",
-		[parameter()][string]$TagValue = "",
-		[parameter()][string]$ExtensionName = ""
+		[parameter(Mandatory=$true)][string]$TagName,
+		[parameter(Mandatory=$false)][string]$TagValue = "",
+		[parameter(Mandatory=$false)][switch]$SelectContext,
+		[parameter(Mandatory=$false)][switch]$AllSubscriptions,
+		[parameter(Mandatory=$false)][string]$ExtensionName = ""
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	$currentContext = (Get-AzContext)
@@ -38,7 +38,11 @@ function Get-AzToolsVm {
 		Write-Host "Subscription: $($azsub.Name) - $($azsub.Id)" -ForegroundColor Cyan
 		$null = Select-AzSubscription -Subscription $azsub
 		$machines = $null
-		[array](Get-AzVm -Status | Where-Object {$_.Tags["$TagName"] -eq "$TagValue"})
+		if ([string]::IsNullOrWhiteSpace($TagValue)) {
+			[array](Get-AzVm -Status | Where-Object {-not ([string]::IsNullOrWhiteSpace($_.Tags["$TagName"])) } | Select-Object -Property *,@{l="$TagName";e={$_.Tags["$TagName"]}} | Sort-Object "$TagName", Name)
+		} else {
+			[array](Get-AzVm -Status | Where-Object {$_.Tags["$TagName"] -eq "$TagValue"})
+		}
 	}
 	if ($currentContext -ne (Get-AzContext)) {
 		$null = Set-AzContext $currentContext
