@@ -38,7 +38,7 @@ function Get-AzToolsVm {
 		Write-Host "Subscription: $($azsub.Name) - $($azsub.Id)" -ForegroundColor Cyan
 		$null = Select-AzSubscription -Subscription $azsub
 		$machines = $null
-		[array](Get-AzVm -Status | Where-Object {$_.Tags[$TagName] -eq $TagValue})
+		[array](Get-AzVm -Status | Where-Object {$_.Tags["$TagName"] -eq "$TagValue"})
 	}
 	if ($currentContext -ne (Get-AzContext)) {
 		$null = Set-AzContext $currentContext

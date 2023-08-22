@@ -3,7 +3,7 @@
 # Generated on: 8/18/2023
 @{
 RootModule = '.\aztools.psm1'
-ModuleVersion = '0.0.3'
+ModuleVersion = '0.0.4'
 # CompatiblePSEditions = @()
 GUID = 'acdf46e8-6060-4db9-91bc-e41cd19957c4'
 Author = 'Skatterbrainz'
