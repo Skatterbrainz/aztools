@@ -17,6 +17,33 @@ function Get-AzToolsVm {
 		Optional. Name of Azure VM extension
 	.EXAMPLE
 		Get-AzToolsVm -TagName "PatchGroup" -TagValue "Group2"
+
+		Returns all VM's in the current subscription which have tag "PatchGroup" assigned with value "Group2"
+	.EXAMPLE
+		Get-AzToolsVm -TagName "PatchGroup" -TagValue "Group2" -AllSubscriptions
+
+		Returns all VM's in all subscriptions which have tag "PatchGroup" assign with value "Group2"
+	.EXAMPLE
+		Get-AzToolsVm -TagName "PatchGroup" -AllSubscriptions
+
+		Returns all VM's in all subscriptions which have tag "PatchGroup" assigned with any value,
+		sorted by tag value first, then by machine name
+	.EXAMPLE
+		Get-AzToolsVm -TagName "PatchGroup" -AllSubscription | Select-Object PatchGroup,Name,OSName,PowerState
+
+		Example showing some common properties to return for viewing or processing, something like this:
+
+		```
+		PatchGroup Name               OsName                                       PowerState
+		---------- ----               ------                                       ----------
+		Group1     AZEVMCTXA01        Windows Server 2016 Standard                 VM running
+		Group1     AZEVMCTXA03        Windows Server 2016 Datacenter               VM running
+		Group1     AZEVMCTXDB02       Windows Server 2016 Standard                 VM running
+		Group1     AZDEVCXDB04                                                     VM deallocated
+		Group2     AZEPRODAW01        Windows Server 2016 Standard                 VM running
+		Group2     AZEPRODAW02        Windows Server 2016 Datacenter               VM running
+		Group2     AZEPRODDB01        Windows Server 2016 Datacenter               VM running
+	```
 	.NOTES
 	#>
 	[CmdletBinding()]
@@ -24,8 +51,7 @@ function Get-AzToolsVm {
 		[parameter(Mandatory=$true)][string]$TagName,
 		[parameter(Mandatory=$false)][string]$TagValue = "",
 		[parameter(Mandatory=$false)][switch]$SelectContext,
-		[parameter(Mandatory=$false)][switch]$AllSubscriptions,
-		[parameter(Mandatory=$false)][string]$ExtensionName = ""
+		[parameter(Mandatory=$false)][switch]$AllSubscriptions
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	$currentContext = (Get-AzContext)
