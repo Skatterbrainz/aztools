@@ -1,4 +1,35 @@
 function Invoke-AzToolsRunCommand  {
+	<#
+	.DESCRIPTION
+		Invoke the Azure VM "Run Command" to submit PowerShell code to remote machines and
+		return the result.
+	.PARAMETER ScriptContent
+		Optional. PowerShell statement to run on the remote machine.
+		Example: Get-Process | Sort-Object WorkingSet -Desc | Select-Object -First 3
+		Note: Either -ScriptContent or -ScriptFile must be provided, not both
+	.PARAMETER ScriptFile
+		Optional. File containing PowerShell script code to run on the remote machine.
+		Note: Either -ScriptContent or -ScriptFile must be provided, not both
+	.PARAMETER SelectContext
+		Optional. Prompt to select the Azure context (tenant/subscription)
+	.PARAMETER SelectSubscription
+		Optional. Prompt to select Subscriptions to query machines.
+		Default is to query the current subscription context only.
+	.PARAMETER RunCommandName
+		Optional. Name of RunCommand. Default is "AzToolsRunCommand"
+	.PARAMETER WaitSeconds
+		Optional. Number of seconds to wait for job completion on each VM between polling cycles
+		Default is 10 (seconds)
+	.PARAMETER TryCount
+		Optional. Number of times to poll for job completion
+		Default is 10 (retries)
+	.EXAMPLE
+		Invoke-AzToolsRunCommand -ScriptContent "Get-Service BITS"
+		Prompts user to select VM's to run the command on from within the current subscription context.
+	.EXAMPLE
+		Invoke-AzToolsRunCommand -ScriptContent "Get-Service BITS" -SelectSubscription
+		Prompts user to select the Subscriptions to query VM's and then prompts to select the VM's to run the command on.
+	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][string]$ScriptContent,
