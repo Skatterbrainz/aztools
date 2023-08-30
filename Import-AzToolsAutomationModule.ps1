@@ -1,15 +1,23 @@
-function Import-AzToolsModule {
+function Import-AzAutomationToolsModule {
 	<#
+	.SYNOPSIS
+		Import a PowerShell module into an Azure Automation Account
 	.DESCRIPTION
-		Import/Update module into Azure Automation Account
+		Import or Update a PowerShell module into an Azure Automation Account
 	.PARAMETER ModuleName
-		Name of module in PS Gallery
+		Name of module in PowerShell Gallery
 	.PARAMETER ModuleVersion
-		Version to be imported
+		Optional. Version to be imported. If not provided, the latest/current version is imported
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
-		Import-AzToolsModules -ModuleName az.accounts -ModuleVersion 2.12.1
+		Import-AzAutomationToolsModule -ModuleName az.accounts
+
+		Imports current/latest version from the PowerShell Gallery
+	.EXAMPLE
+		Import-AzAutomationToolsModule -ModuleName az.accounts -ModuleVersion 2.12.1
+
+		Imports version 2.12.1 from the PowerShell Gallery
 	#>
 	[CmdletBinding()]
 	[OutputType([Microsoft.Azure.Commands.Automation.Model.Module])]

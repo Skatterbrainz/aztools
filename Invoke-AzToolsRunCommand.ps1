@@ -1,8 +1,10 @@
 function Invoke-AzToolsRunCommand  {
 	<#
+	.SYNOPSIS
+		Invoke the "Run Command" feature on an Azure Virtual Machine using PowerShell
 	.DESCRIPTION
 		Invoke the Azure VM "Run Command" to submit PowerShell code to remote machines and
-		return the result.
+		return the result. Script code can be provided in-line or from a script file.
 	.PARAMETER ScriptContent
 		Optional. PowerShell statement to run on the remote machine.
 		Example: Get-Process | Sort-Object WorkingSet -Desc | Select-Object -First 3

@@ -1,5 +1,7 @@
 function Remove-AzToolsContext {
 	<#
+	.SYNOPSIS
+		Remove selected Azure Az Context sessions
 	.DESCRIPTION
 		Remove select Azure AzContext sessions for current user
 	.PARAMETER NoConfirm

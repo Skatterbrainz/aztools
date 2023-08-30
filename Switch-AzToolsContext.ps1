@@ -3,7 +3,7 @@ function Switch-AzToolsContext {
 	.SYNOPSIS
 		Switch between Azure Contexts
 	.DESCRIPTION
-		Switch between Azure contexts
+		Switch between Azure contexts using a PowerShell Gridview menu
 	.PARAMETER Name
 		Name of Context. If omitted, it will display a GridView to choose the target context
 	.PARAMETER List

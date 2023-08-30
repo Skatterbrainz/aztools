@@ -1,7 +1,11 @@
 function Rename-AzToolsContext {
 	<#
+	.SYNOPSIS
+		Rename an existing Azure context
 	.DESCRIPTION
+		Rename a selected Azure context for easier referencing
 	.PARAMETER (none)
+		This function requires no input
 	.EXAMPLE
 		Rename-AzToolsContext
 		Displays gridview to select context to rename, then prompts for new name to apply
