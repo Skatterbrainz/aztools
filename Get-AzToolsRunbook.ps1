@@ -20,6 +20,7 @@ function Get-AzToolsRunbook {
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
+		[parameter()][switch]$SelectAutomationAccount,
 		[parameter()][switch]$All,
 		[parameter()][string]$Filter = "*"
 	)
