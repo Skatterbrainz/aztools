@@ -3,11 +3,11 @@
 # Generated on: 9/7/2023
 @{
 RootModule = '.\aztools.psm1'
-ModuleVersion = '0.2.0'
+ModuleVersion = '0.3.0'
 # CompatiblePSEditions = @()
 GUID = 'acdf46e8-6060-4db9-91bc-e41cd19957c4'
 Author = 'Skatterbrainz'
-CompanyName = 'Baron von Skattered McBrainz, Esquire'
+CompanyName = 'Some dude named Dave'
 Copyright = '(c) Skatterbrainz. All rights reserved.'
 Description = 'Azure PowerShell Tools'
 PowerShellVersion = '7.3'
@@ -39,7 +39,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/Skatterbrainz/aztools'
         # IconUri = ''
         # ReleaseNotes = ''
-        Prerelease = 'alpha'
+        Prerelease = 'beta'
         RequireLicenseAcceptance = $false
         # ExternalModuleDependencies = @()
     }
