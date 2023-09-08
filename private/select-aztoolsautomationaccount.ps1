@@ -12,6 +12,6 @@ function Select-AzToolsAutomationAccount {
 			Write-Warning "No Automation Accounts found in Resource Group: $($global:AzToolsLastResourceGroup.ResourceGroupName)"
 		}
 	} else {
-		Write-Warning "Resource Group not yet selected"
+		Write-Warning "Resource Group not yet selected - use Switch-AzToolsContext"
 	}
 }
