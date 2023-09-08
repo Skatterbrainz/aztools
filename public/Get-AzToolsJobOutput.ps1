@@ -18,21 +18,18 @@ function Get-AzToolsJobOutput {
 		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AzToolsLastSubscription -or $SelectContext) {
-		$azsubs = Get-AzSubscription
-		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AzToolsLastSubscription = $azsub
-		}
-	}
+	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
 	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
+				$aaname = $global:AzToolsLastAutomationAccount.AutomationAccountName
+				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
 				$params = @{
-					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
-					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
+					ResourceGroupName     = $rgname
+					AutomationAccountName = $aaname
 					Id                    = $JobId
 					Stream                = 'Any'
 				}

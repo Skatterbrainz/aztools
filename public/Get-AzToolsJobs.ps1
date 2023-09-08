@@ -37,33 +37,19 @@ function Get-AzToolsJobs {
 		[parameter()][switch]$ShowOutput
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AzToolsLastSubscription -or $SelectContext) {
-		$azsubs = Get-AzSubscription
-		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AzToolsLastSubscription = $azsub
-		}
-	}
+	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
 	if ($script:AzToolsLastSubscription) {
-		if (!$global:AzToolsLastResourceGroup -or $SelectContext) {
-			$rglist = Get-AzResourceGroup
-			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
-				$global:AzToolsLastResourceGroup = $rg
-			}
-		}
+		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
-			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) {
-				if ($aalist = Get-AzAutomationAccount -ResourceGroupName $global:AzToolsLastResourceGroup.ResourceGroupName) {
-					if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-GridView -Title "Select Automation Account" -OutputMode Single) {
-						$global:AzToolsLastAutomationAccount = $aa
-					}
-				}
-			}
-			if ($script:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
+			if (!$global:AzToolsLastAutomationAccount -or $SelectContext -or $SelectAutomationAccount) { Select-AzToolsAutomationAccount }
+			if ($global:AzToolsLastAutomationAccount) {
+				$aaname = $global:AzToolsLastAutomationAccount.AutomationAccountName
+				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
 				$params = @{
 					Status                = $JobStatus
-					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
-					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
+					ResourceGroupName     = $rgname
+					AutomationAccountName = $aaname
 				}
 				if ($StartTime) { $params['StartTime'] = $StartTime }
 				if ($EndTime)   { $params['EndTime']   = $EndTime }

@@ -1,4 +1,4 @@
-function Get-AzToolsAutomationHybridWorker {
+function Get-AzToolsHybridWorker {
 	<#
 	.SYNOPSIS
 		Get Automation Account Hybrid Worker status
@@ -7,52 +7,50 @@ function Get-AzToolsAutomationHybridWorker {
 		Only returns User hybrid workers (not system)
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
-	.PARAMETER SelectAutomationAccount
-		Optional. Prompt to select the Automation Account
 	.PARAMETER ThresholdMinutes
 		Optional. Number of minutes to allow for last-seen time before considering it a concern.
 		Default is 30 minutes.
 	.EXAMPLE
-		Get-AzToolsAutomationHybridWorker
+		Get-AzToolsHybridWorker
 	.EXAMPLE
-		Get-AzToolsAutomationHybridWorker -SelectContext
+		Get-AzToolsHybridWorker -SelectContext
 	.EXAMPLE
-		Get-AzToolsAutomationHybridWorker -SelectAutomationAccount
+		Get-AzToolsHybridWorker -ThresholdMinutes 45
 	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$SelectAutomationAccount,
 		[parameter()][int]$ThresholdMinutes = 30
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
-		$azsubs = Get-AzSubscription
-		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AzToolsLastSubscription = $azsub
-		}
-	}
+	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
 	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
-			if (!$global:AzToolsLastAutomationAccount -or $SelectContext -or $SelectAutomationAccount) { Select-AzToolsAutomationAccount }
+			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
-				Write-Host "Select hybrid worker group" -ForegroundColor Cyan
+				$aaname = $AzToolsLastAutomationAccount.AutomationAccountName
+				$rgname = $AzToolsLastAutomationAccount.ResourceGroupName
+				Write-Verbose "Getting hybrid worker groups"
 				$params = @{
-					ResourceGroupName = $AzToolsLastAutomationAccount.ResourceGroupName
-					AutomationAccountName = $AzToolsLastAutomationAccount.AutomationAccountName
-					ErrorAction = 'Stop'
+					ResourceGroupName     = $rgname
+					AutomationAccountName = $aaname
+					ErrorAction           = 'Stop'
 				}
+				Write-Verbose "Filtering on GroupType=User"
 				$hwg = Get-AzAutomationHybridRunbookWorkerGroup @params | Where-Object {$_.GroupType -eq 'User'} | Sort-Object Name
 				if ($hwg) {
-					$hwx = $hwg | Select-Object Name, @{l='AutomationAccount';e={$global:AzToolsLastAutomationAccount.AutomationAccountName}} | Out-GridView -Title "Select Hybrid Worker Group" -OutputMode Single
+					Write-Host "Select hybrid worker group" -ForegroundColor Cyan
+					$hwx = $hwg | Select-Object Name, @{l='AutomationAccount';e={$aaname}} | Out-GridView -Title "Select Hybrid Worker Group" -OutputMode Single
 					if ($hwx) {
+						Write-Verbose "Getting hybrid worker details"
 						$params = @{
 							HybridRunbookWorkerGroupName = $hwx.Name
-							ResourceGroupName = $AzToolsLastAutomationAccount.ResourceGroupName
-							AutomationAccountName = $AzToolsLastAutomationAccount.AutomationAccountName
+							ResourceGroupName            = $rgname
+							AutomationAccountName        = $aaname
 						}
 						$hw = Get-AzAutomationHybridRunbookWorker @params | Select-Object WorkerName,WorkerType,@{l='LastSeen';e={$_.LastSeenDateTime.LocalDateTime}},RegisteredDateTime,Ip,Id
+						Write-Verbose "Comparing last-seen datetime values"
 						if ($hw.LastSeen -lt (Get-Date).AddMinutes(-$ThresholdMinutes)) {
 							$stat = "More than $ThresholdMinutes minutes ago"
 						} else {

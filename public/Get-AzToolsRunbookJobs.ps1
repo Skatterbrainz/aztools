@@ -11,8 +11,11 @@ function Get-AzToolsRunbookJobs {
 		Activating, Completed, Failed,Queued,Resuming, Running, Starting, Stopped, Stopping, Suspended, Suspending
 		Default = Running
 	.PARAMETER StartTime
+		Optional. Filter jobs starting after [StartTime] (date and time)
 	.PARAMETER EndTime
+		Optional. Filter jobs with status prior to [EndTime] (date and time)
 	.PARAMETER RunbookName
+		Optional. Filter jobs related to a specific Runbook
 	.PARAMETER ShowOutput
 		Optional. Send Jobs to Get-AzToolsJobOutput for more detailed information
 	.PARAMETER ShowLimit
@@ -36,27 +39,20 @@ function Get-AzToolsRunbookJobs {
 		[parameter()][int]$ShowLimit = 10
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AzToolsLastSubscription -or $SelectContext) {
-		$azsubs = Get-AzSubscription
-		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AzToolsLastSubscription = $azsub
-		}
-	}
+	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
 	if ($global:AzToolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
 			if (!$global:AzToolsLastAutomationAccount -or $SelectContext) { Select-AzToolsAutomationAccount }
 			if ($global:AzToolsLastAutomationAccount) {
-				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($global:AzToolsLastResourceGroup.ResourceGroupName) AutomationAccount=$($global:AzToolsLastAutomationAccount.AutomationAccountName)"
-				$params = @{
-					ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
-					AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
-				}
+				$aaname = $global:AzToolsLastAutomationAccount.AutomationAccountName
+				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
+				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
 				if (!$global:AzToolsLastRunbook -or $SelectContext) { Select-AzToolsAutomationRunbook }
 				if ($global:AzToolsLastRunbook) {
 					$params = @{
-						ResourceGroupName     = $global:AzToolsLastResourceGroup.ResourceGroupName
-						AutomationAccountName = $global:AzToolsLastAutomationAccount.AutomationAccountName
+						ResourceGroupName     = $rgname
+						AutomationAccountName = $aaname
 						RunbookName           = $($global:AzToolsLastRunbook).Name
 					}
 					if ($StartTime) { $params['StartTime'] = $StartTime }
@@ -74,8 +70,16 @@ function Get-AzToolsRunbookJobs {
 					} else {
 						$results
 					}
+				} else {
+					Write-Warning "Runbook not yet selected"
 				}
+			} else {
+				Write-Warning "Automation Account not yet selected"
 			}
+		} else {
+			Write-Warning "Resource Group not yet selected"
 		}
+	} else {
+		Write-Warning "Azure Subscription not yet selected"
 	}
 }

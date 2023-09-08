@@ -6,8 +6,6 @@ function Export-AzToolsRunbooks {
 		Export Azure Automation Runbooks to local storage
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
-	.PARAMETER All
-		Optional. Export all runbooks in the current Automation Account
 	.PARAMETER Filter
 		Optional. Filter runbooks by name pattern.
 		Default = "*" (all matching)
@@ -15,25 +13,19 @@ function Export-AzToolsRunbooks {
 		Optional. Destination folder path.
 		Default = current user Desktop
 	.EXAMPLE
-		Export-AzToolsRunbooks -All
+		Export-AzToolsRunbooks
 	.EXAMPLE
-		Export-AzToolsRunbooks -All -Filter "UserAccount*" -Path "c:\temp"
+		Export-AzToolsRunbooks -Filter "UserAccount*" -Path "c:\temp"
 	.NOTES
 	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$All,
 		[parameter()][string]$Filter = "*",
 		[parameter()][string]$Path = "$($env:USERPROFILE)\desktop"
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	if (!$global:AztoolsLastSubscription -or $SelectContext) {
-		$azsubs = Get-AzSubscription
-		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
-			$global:AztoolsLastSubscription = $azsub
-		}
-	}
+	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
 	if ($global:AztoolsLastSubscription) {
 		if (!$global:AzToolsLastResourceGroup -or $SelectContext) { Select-AzToolsResourceGroup }
 		if ($global:AzToolsLastResourceGroup) {
