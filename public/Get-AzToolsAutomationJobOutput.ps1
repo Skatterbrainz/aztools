@@ -1,4 +1,4 @@
-function Get-AzToolsJobOutput {
+function Get-AzToolsAutomationJobOutput {
 	<#
 	.SYNOPSIS
 		Get Azure Automation runbook job output
@@ -9,8 +9,7 @@ function Get-AzToolsJobOutput {
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
-		Get-AztJobOutput -JobID abcdbf6d-1234-abcd-efgh-a5633676041c
-	.NOTES
+		Get-AzToolsAutomationJobOutput -JobID abcdbf6d-1234-abcd-efgh-a5633676041c
 	#>
 	[CmdletBinding()]
 	param (

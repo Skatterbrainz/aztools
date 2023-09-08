@@ -1,16 +1,20 @@
-Function Get-AzToolsRunbookLastJob {
+Function Get-AzToolsAutomationLastJob {
 	<#
 	.SYNOPSIS
 		Get date and time of most recent Runbook job execution
 	.DESCRIPTION
 		Get the date and time of the most recent Azure Automation Runbook job execution
 	.PARAMETER SelectContext
+		Optional. Prompt to select the Azure context (tenant/subscription)
 	.PARAMETER RunbookName
+		Name of runbook to query last job execution
+	.EXAMPLE
+		Get-AzToolsAutomationLastJob -RunbookName "Get-MachinesByTag"
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][string]$RunbookName
+		[parameter(Mandatory)][string]$RunbookName,
+		[parameter()][switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

@@ -51,26 +51,37 @@ function Get-AzToolsVm {
 		[parameter(Mandatory=$true)][string]$TagName,
 		[parameter(Mandatory=$false)][string]$TagValue = "",
 		[parameter(Mandatory=$false)][switch]$SelectContext,
-		[parameter(Mandatory=$false)][switch]$AllSubscriptions
+		[parameter(Mandatory=$false)][switch]$AllSubscriptions,
+		[parameter()][string]$SubscriptionId
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
-	$currentContext = (Get-AzContext)
-	if ($AllSubscriptions) {
-		[array]$azsubs = (Get-AzSubscription)
-	} else {
-		[array]$azsubs = $(Get-AzContext).Subscription
-	}
-	foreach ($azsub in $azsubs) {
-		Write-Host "Subscription: $($azsub.Name) - $($azsub.Id)" -ForegroundColor Cyan
-		$null = Select-AzSubscription -Subscription $azsub
-		$machines = $null
-		if ([string]::IsNullOrWhiteSpace($TagValue)) {
-			[array](Get-AzVm -Status | Where-Object {-not ([string]::IsNullOrWhiteSpace($_.Tags["$TagName"])) } | Select-Object -Property *,@{l="$TagName";e={$_.Tags["$TagName"]}} | Sort-Object "$TagName", Name)
+	try {
+		$currentContext = (Get-AzContext)
+		if ($AllSubscriptions) {
+			[array]$azsubs = Get-AzSubscription | Where-Object {$_.State -eq 'Enabled'}
+		} elseif (![string]::IsNullOrWhiteSpace($SubscriptionId)) {
+			[array]$azsubs = Get-AzSubscription -SubscriptionId $SubscriptionId
 		} else {
-			[array](Get-AzVm -Status | Where-Object {$_.Tags["$TagName"] -eq "$TagValue"})
+			[array]$azsubs = $(Get-AzContext).Subscription
 		}
-	}
-	if ($currentContext -ne (Get-AzContext)) {
-		$null = Set-AzContext $currentContext
+		$scount  = $azsubs.Count
+		$counter = 1
+		foreach ($azsub in $azsubs) {
+			Write-Host "Subscription $counter of $scount : $($azsub.Name) - $($azsub.Id)" -ForegroundColor Cyan
+			$null = Select-AzSubscription -Subscription $azsub
+			$machines = $null
+			if ([string]::IsNullOrWhiteSpace($TagValue)) {
+				$machines = (Get-AzVm -Status | Where-Object {-not ([string]::IsNullOrWhiteSpace($_.Tags["$TagName"])) } | Select-Object -Property *,@{l="$TagName";e={$_.Tags["$TagName"]}},@{l='SubscriptionId';e={$azsub.Id}})
+			} else {
+				$machines = (Get-AzVm -Status | Where-Object {$_.Tags["$TagName"] -eq "$TagValue"} | Select-Object -Property *,@{l='SubscriptionId';e={$azsub.Id}})
+			}
+			$machines
+			$counter++
+		}
+	} catch {}
+	finally {
+		if ($currentContext -ne (Get-AzContext)) {
+			$null = Set-AzContext $currentContext
+		}
 	}
 }

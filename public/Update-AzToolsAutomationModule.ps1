@@ -1,4 +1,4 @@
-function Update-AzToolsModule {
+function Update-AzToolsAutomationModule {
 	<#
 	.SYNOPSIS
 		Update PowerShell module in Azure Automation Account
@@ -12,11 +12,11 @@ function Update-AzToolsModule {
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
-		Update-AzToolsModule -Name ExchangeOnlineManagement
+		Update-AzToolsAutomationModule -Name ExchangeOnlineManagement
 	.EXAMPLE
-		Update-AzToolsModule -Name ExchangeOnlineManagement -UpdateModule
+		Update-AzToolsAutomationModule -Name ExchangeOnlineManagement -UpdateModule
 	.NOTES
-		This function is by Matthew Dowst, I just made miniscule tweaks to fit this module
+		This function is heavily adapted from code written by Matthew Dowst (@mdowst), I just made miniscule tweaks to fit this module
 	#>
 	[CmdletBinding()]
 	param (
@@ -37,12 +37,12 @@ function Update-AzToolsModule {
 	} else {
 		foreach ($aaModule in $aaModules) {
 			#$AzModule = 'Az.' + $aaModule.Name.Split('.')[1]
-			$UploadModules = Get-AzToolsModuleDetails $aaModule.Name
+			$UploadModules = Get-AzToolsAutomationModuleDetails $aaModule.Name
 			if (-not $UploadModules){
 				Write-Host "No module found for $($aaModule.Name) in PowerShellGallery" -ForegroundColor Red
 			} else {
 				$UploadModules | Foreach-Object {
-					if (Get-ModuleVersionCheck -ModuleName $_.Name -MinimumVersion $_.Version) {
+					if (Invoke-AzToolsModuleVersionCheck -ModuleName $_.Name -MinimumVersion $_.Version) {
 						Write-Host "$($_.Name) module is already present with an equal or higher version. No update required" -ForegroundColor Cyan
 					} else {
 						if ($UpdateModule) {

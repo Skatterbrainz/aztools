@@ -1,4 +1,4 @@
-function Get-AzToolsAutomationAccountSummary {
+function Get-AzToolsAutomationAccount {
 	<#
 	.SYNOPSIS
 		Display summary information for Azure Automation Account
@@ -12,9 +12,9 @@ function Get-AzToolsAutomationAccountSummary {
 	.PARAMETER Detailed
 		Optional. Includes information for the Primary Key, Secondary Key and Endpoint URI
 	.EXAMPLE
-		Get-AzToolsAutomationAccountSummary
+		Get-AzToolsAutomationAccount
 	.EXAMPLE
-		Get-AzToolsAutomationAccountSummary -Detailed
+		Get-AzToolsAutomationAccount -Detailed
 	#>
 	[CmdletBinding()]
 	param(

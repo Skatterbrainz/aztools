@@ -1,4 +1,4 @@
-function Get-AzToolsRunbook {
+function Get-AzToolsAutomationRunbook {
 	<#
 	.SYNOPSIS
 		Get Azure Automation Runbooks
@@ -15,30 +15,41 @@ function Get-AzToolsRunbook {
 		Optional. If TagName is provided, filters the results to matching tag and value
 		If not provided with TagName, then results are filtered to return runbooks
 		which have Tag [TagName] regardless of the value assigned to the tag.
+	.PARAMETER Export
+		Optional. Save runbooks to local path
+	.PARAMETER ExportPath
+		Optional. If -Export is used, specifies the path where runbook files will be saved.
+		Default is current user profile "desktop" path.
 	.EXAMPLE
-		Get-AzToolsRunbooks
+		Get-AzToolsAutomationRunbook
 
 		Returns all runbooks in the active Automation Account
 	.EXAMPLE
-		Get-AzToolsRunbooks -Filter "UserAccount*"
+		Get-AzToolsAutomationRunbook -Filter "UserAccount*"
 
 		Returns runbooks where the name begins with 'UserAccount'
 	.EXAMPLE
-		Get-AzToolsRunbooks -TagName "RunOn" -TagValue "Azure"
+		Get-AzToolsAutomationRunbook -TagName "RunOn" -TagValue "Azure"
 
 		Returns runbooks which have tag "RunOn" assigned to value "Azure"
 	.EXAMPLE
-		Get-AzToolsRunbooks -SelectContext
+		Get-AzToolsAutomationRunbook -SelectContext
 
 		Prompts to select the Subscription, ResourceGroup, AutomationAccount and then
 		returns all runbooks in the selected Automation Account.
+	.EXAMPLE
+		Get-AzToolsAutomationRunbook -Export -ExportPath "c:\temp"
+
+		Exports runbooks to files under "c:\temp"
 	#>
 	[CmdletBinding()]
 	param (
 		[parameter()][switch]$SelectContext,
 		[parameter()][string]$Filter = "*",
 		[parameter()][string]$TagName,
-		[parameter()][string]$TagValue
+		[parameter()][string]$TagValue,
+		[parameter()][switch]$Export,
+		[parameter()][string]$ExportPath = "$($env:USERPROFILE)\desktop"
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
@@ -69,7 +80,21 @@ function Get-AzToolsRunbook {
 						$runbooks = $runbooks | Where-Object {$_.Tags[$TagName]}
 					}
 				}
-				$runbooks
+				if ($Export) {
+					foreach ($runbook in $runbooks) {
+						Write-Host "Exporting: $(Join-Path $Path $runbook.Name)" -ForegroundColor Cyan
+						$params = @{
+							Name                  = $runbook.Name
+							OutputFolder          = $ExportPath
+							ResourceGroupName     = $rgname
+							AutomationAccountName = $aaname
+							Force                 = $True
+						}
+						$null = Export-AzAutomationRunbook @params
+					}
+				} else {
+					$runbooks
+				}
 			} else {
 				Write-Warning "Automation Account not yet selected"
 			}

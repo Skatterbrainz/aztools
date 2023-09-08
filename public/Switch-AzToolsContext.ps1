@@ -12,7 +12,6 @@ function Switch-AzToolsContext {
 		Switch-AztContext
 	.EXAMPLE
 		Switch-AzToolsContext -name "contoso"
-	.NOTES
 	#>
 	[CmdletBinding()]
 	param (

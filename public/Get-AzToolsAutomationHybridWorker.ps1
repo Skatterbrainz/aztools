@@ -1,4 +1,4 @@
-function Get-AzToolsHybridWorker {
+function Get-AzToolsAutomationHybridWorker {
 	<#
 	.SYNOPSIS
 		Get Automation Account Hybrid Worker status
@@ -11,11 +11,11 @@ function Get-AzToolsHybridWorker {
 		Optional. Number of minutes to allow for last-seen time before considering it a concern.
 		Default is 30 minutes.
 	.EXAMPLE
-		Get-AzToolsHybridWorker
+		Get-AzToolsAutomationHybridWorker
 	.EXAMPLE
-		Get-AzToolsHybridWorker -SelectContext
+		Get-AzToolsAutomationHybridWorker -SelectContext
 	.EXAMPLE
-		Get-AzToolsHybridWorker -ThresholdMinutes 45
+		Get-AzToolsAutomationHybridWorker -ThresholdMinutes 45
 	#>
 	[CmdletBinding()]
 	param (

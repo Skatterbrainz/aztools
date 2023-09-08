@@ -1,4 +1,4 @@
-function Invoke-AzToolsRunCommand  {
+function Invoke-AzToolsVmRunCommand  {
 	<#
 	.SYNOPSIS
 		Invoke the "Run Command" feature on an Azure Virtual Machine using PowerShell
@@ -26,10 +26,10 @@ function Invoke-AzToolsRunCommand  {
 		Optional. Number of times to poll for job completion
 		Default is 10 (retries)
 	.EXAMPLE
-		Invoke-AzToolsRunCommand -ScriptContent "Get-Service BITS"
+		Invoke-AzToolsVmRunCommand -ScriptContent "Get-Service BITS"
 		Prompts user to select VM's to run the command on from within the current subscription context.
 	.EXAMPLE
-		Invoke-AzToolsRunCommand -ScriptContent "Get-Service BITS" -SelectSubscription
+		Invoke-AzToolsVmRunCommand -ScriptContent "Get-Service BITS" -SelectSubscription
 		Prompts user to select the Subscriptions to query VM's and then prompts to select the VM's to run the command on.
 	#>
 	[CmdletBinding()]

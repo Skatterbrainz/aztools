@@ -9,7 +9,6 @@ function Rename-AzToolsContext {
 	.EXAMPLE
 		Rename-AzToolsContext
 		Displays gridview to select context to rename, then prompts for new name to apply
-	.NOTES
 	#>
 	[CmdletBinding()]
 	param ()

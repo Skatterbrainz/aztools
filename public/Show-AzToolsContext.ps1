@@ -2,5 +2,6 @@ function Show-AzToolsContext {
 	[CmdletBinding()]
 	param()
 	Get-AzContext -ListAvailable | Sort-Object Name
-	Write-Host "Current context: $(Get-AzContext | Select-Object -ExpandProperty Name)" -ForegroundColor Cyan
+	$ctx = Get-AzContext
+	Write-Host "Current context: $($ctx.Name) - $($ctx.Account.Id) - $($ctx.Subscription.Id)" -ForegroundColor Cyan
 }

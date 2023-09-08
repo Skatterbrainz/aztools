@@ -1,4 +1,4 @@
-function Import-AzAutomationToolsModule {
+function Import-AzToolsAutomationModule {
 	<#
 	.SYNOPSIS
 		Import a PowerShell module into an Azure Automation Account
@@ -15,7 +15,7 @@ function Import-AzAutomationToolsModule {
 
 		Imports current/latest version from the PowerShell Gallery
 	.EXAMPLE
-		Import-AzAutomationToolsModule -ModuleName az.accounts -ModuleVersion 2.12.1
+		Import-AzToolsAutomationModule -ModuleName az.accounts -ModuleVersion 2.12.1
 
 		Imports version 2.12.1 from the PowerShell Gallery
 	#>

@@ -1,4 +1,4 @@
-function Get-AzToolsRunbookJobs {
+function Get-AzToolsAutomationJobs {
 	<#
 	.SYNOPSIS
 		Get Azure Automation Account runbook jobs
@@ -22,10 +22,9 @@ function Get-AzToolsRunbookJobs {
 		Optional. Limit number of jobs to show when using -ShowOutput
 		Default = 10
 	.EXAMPLE
-		Get-AzToolsRunbookJobs -JobStatus Failed
+		Get-AzToolsAutomationJobs -JobStatus Failed
 	.EXAMPLE
-		Get-AzToolsRunbookJobs -JobStatus Failed -RunbookName "MyRunbook"
-	.NOTES
+		Get-AzToolsAutomationJobs -JobStatus Failed -RunbookName "MyRunbook"
 	#>
 	[CmdletBinding()]
 	param (

@@ -1,4 +1,4 @@
-function Get-AzToolsModule {
+function Get-AzToolsAutomationModule {
 	<#
 	.SYNOPSIS
 		Get Azure Automation Account Modules
@@ -7,9 +7,9 @@ function Get-AzToolsModule {
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
-		Get-AzToolsModule
+		Get-AzToolsAutomationModule
 	.EXAMPLE
-		Get-AzToolsModule -SelectContext
+		Get-AzToolsAutomationModule -SelectContext
 	#>
 	[CmdletBinding()]
 	param (
