@@ -21,10 +21,14 @@ function Get-AzToolsAutomationJobs {
 	.PARAMETER ShowLimit
 		Optional. Limit number of jobs to show when using -ShowOutput
 		Default = 10
+	.PARAMETER StopProcessing
+		Optional. Stops jobs returned from query [only if] the JobStatus parameter is "Suspended"
 	.EXAMPLE
 		Get-AzToolsAutomationJobs -JobStatus Failed
 	.EXAMPLE
 		Get-AzToolsAutomationJobs -JobStatus Failed -RunbookName "MyRunbook"
+	.EXAMPLE
+		Get-AzToolsAutomationJobs -JobStatus Suspended -RunbookName "MyRunbook" -StopProcessing
 	#>
 	[CmdletBinding()]
 	param (
@@ -35,7 +39,8 @@ function Get-AzToolsAutomationJobs {
 		[parameter()][datetime]$EndTime,
 		[parameter()][string]$RunbookName,
 		[parameter()][switch]$ShowOutput,
-		[parameter()][int]$ShowLimit = 10
+		[parameter()][int]$ShowLimit = 10,
+		[parameter()][switch]$StopProcessing
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
@@ -65,6 +70,20 @@ function Get-AzToolsAutomationJobs {
 							$results | Select-Object -First $ShowLimit | Foreach-Object { Get-AzToolsJobOutput -JobId $_.JobId }
 						} else {
 							$results | Foreach-Object { Get-AzToolsJobOutput -JobId $_.JobId }
+						}
+					} if ($StopProcessing) {
+						if ($JobStatus -in ('Suspended')) {
+							$counter = 1
+							$total = $results.Count
+							$results | Foreach-Object {
+								try {
+									Stop-AzAutomationJob -Id $_.JobId -ResourceGroupName $_.ResourceGroupName -AutomationAccountName $_.AutomationAccountName -ErrorAction Stop
+									Write-Host "Stopped Job $counter of $total : $($_.JobId)"
+								} catch {
+									Write-Warning "Job Stop request $counter of $total failed. Error: $($_.Exception.Message)"
+								}
+								$counter++
+							}
 						}
 					} else {
 						$results
