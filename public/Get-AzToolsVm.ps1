@@ -15,6 +15,9 @@ function Get-AzToolsVm {
 		Required if -TagName is used. Value assigned to TagName to filter on
 	.PARAMETER ExtensionName
 		Optional. Name of Azure VM extension
+	.PARAMETER SubscriptionId
+		Optional. Limits scope to subscription with matching Id only.
+		If AllSubscriptions is used, this is ignored.
 	.EXAMPLE
 		Get-AzToolsVm -TagName "PatchGroup" -TagValue "Group2"
 
@@ -52,7 +55,7 @@ function Get-AzToolsVm {
 		[parameter(Mandatory=$false)][string]$TagValue = "",
 		[parameter(Mandatory=$false)][switch]$SelectContext,
 		[parameter(Mandatory=$false)][switch]$AllSubscriptions,
-		[parameter()][string]$SubscriptionId
+		[parameter(Mandatory=$false)][string]$SubscriptionId
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	try {
