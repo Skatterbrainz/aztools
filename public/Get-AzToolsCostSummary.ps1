@@ -18,6 +18,8 @@ function Get-AzToolsCostSummary {
 		that match the portal. I've tried Get-AzBilling<abcdef> cmdlets also, but none
 		seem to come close to the costs in the portal. Maybe I need to inhale more paint
 		fumes or eat kitty litter or something.
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsCostSummary.md
 	#>
 	[CmdletBinding()]
 	param (

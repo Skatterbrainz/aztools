@@ -16,6 +16,8 @@ function Get-AzToolsAutomationHybridWorker {
 		Get-AzToolsAutomationHybridWorker -SelectContext
 	.EXAMPLE
 		Get-AzToolsAutomationHybridWorker -ThresholdMinutes 45
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationHybridWorker.md
 	#>
 	[CmdletBinding()]
 	param (

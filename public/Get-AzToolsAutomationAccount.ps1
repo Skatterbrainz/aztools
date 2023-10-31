@@ -15,6 +15,8 @@ function Get-AzToolsAutomationAccount {
 		Get-AzToolsAutomationAccount
 	.EXAMPLE
 		Get-AzToolsAutomationAccount -Detailed
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationAccount.md
 	#>
 	[CmdletBinding()]
 	param(

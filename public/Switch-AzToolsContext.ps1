@@ -12,6 +12,8 @@ function Switch-AzToolsContext {
 		Switch-AztContext
 	.EXAMPLE
 		Switch-AzToolsContext -name "contoso"
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Switch-AzToolsContext.md
 	#>
 	[CmdletBinding()]
 	param (

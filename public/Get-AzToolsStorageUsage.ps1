@@ -15,6 +15,8 @@ function Get-AzToolsStorageUsage {
 		Get-AzToolsStorageUsage -Scope AllSubscriptions
 	.EXAMPLE
 		Get-AzToolsStorageUsage -Name "sa123456xyz"
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsStorageUsage.md
 	#>
 	[CmdletBinding()]
 	param (

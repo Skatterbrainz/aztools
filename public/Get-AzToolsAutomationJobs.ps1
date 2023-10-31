@@ -29,6 +29,8 @@ function Get-AzToolsAutomationJobs {
 		Get-AzToolsAutomationJobs -JobStatus Failed -RunbookName "MyRunbook"
 	.EXAMPLE
 		Get-AzToolsAutomationJobs -JobStatus Suspended -RunbookName "MyRunbook" -StopProcessing
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationJobs.md
 	#>
 	[CmdletBinding()]
 	param (

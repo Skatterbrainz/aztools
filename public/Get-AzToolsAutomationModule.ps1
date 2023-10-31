@@ -10,6 +10,8 @@ function Get-AzToolsAutomationModule {
 		Get-AzToolsAutomationModule
 	.EXAMPLE
 		Get-AzToolsAutomationModule -SelectContext
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationModule.md
 	#>
 	[CmdletBinding()]
 	param (

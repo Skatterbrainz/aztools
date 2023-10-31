@@ -3,7 +3,7 @@ function Get-AzToolsAutomationRunbook {
 	.SYNOPSIS
 		Get Azure Automation Runbooks
 	.DESCRIPTION
-		Get Azure Automation Runbooks
+		Get and/or export Azure Automation Runbooks
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.PARAMETER Filter
@@ -41,6 +41,8 @@ function Get-AzToolsAutomationRunbook {
 		Get-AzToolsAutomationRunbook -Export -ExportPath "c:\temp"
 
 		Exports runbooks to files under "c:\temp"
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationRunbook.md
 	#>
 	[CmdletBinding()]
 	param (
@@ -82,7 +84,7 @@ function Get-AzToolsAutomationRunbook {
 				}
 				if ($Export) {
 					foreach ($runbook in $runbooks) {
-						Write-Host "Exporting: $(Join-Path $Path $runbook.Name)" -ForegroundColor Cyan
+						Write-Host "Exporting: $(Join-Path $ExportPath $runbook.Name)" -ForegroundColor Cyan
 						$params = @{
 							Name                  = $runbook.Name
 							OutputFolder          = $ExportPath

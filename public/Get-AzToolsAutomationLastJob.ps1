@@ -10,6 +10,8 @@ Function Get-AzToolsAutomationLastJob {
 		Name of runbook to query last job execution
 	.EXAMPLE
 		Get-AzToolsAutomationLastJob -RunbookName "Get-MachinesByTag"
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationLastJob.md
 	#>
 	[CmdletBinding()]
 	param (

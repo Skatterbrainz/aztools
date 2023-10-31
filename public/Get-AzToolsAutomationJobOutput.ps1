@@ -10,6 +10,8 @@ function Get-AzToolsAutomationJobOutput {
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.EXAMPLE
 		Get-AzToolsAutomationJobOutput -JobID abcdbf6d-1234-abcd-efgh-a5633676041c
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationJobOutput.md
 	#>
 	[CmdletBinding()]
 	param (

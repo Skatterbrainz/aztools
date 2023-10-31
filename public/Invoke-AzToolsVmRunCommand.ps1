@@ -31,6 +31,8 @@ function Invoke-AzToolsVmRunCommand  {
 	.EXAMPLE
 		Invoke-AzToolsVmRunCommand -ScriptContent "Get-Service BITS" -SelectSubscription
 		Prompts user to select the Subscriptions to query VM's and then prompts to select the VM's to run the command on.
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Invoke-AzToolsVmRunCommand.md
 	#>
 	[CmdletBinding()]
 	param (

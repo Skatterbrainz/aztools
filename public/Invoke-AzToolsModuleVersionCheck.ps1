@@ -10,6 +10,8 @@ Function Invoke-AzToolsModuleVersionCheck {
 		Invoke-AzToolsModuleVersionCheck -ModuleName "az.accounts" -MinimumVersion "2.12.1"
 	.NOTES
 		This was adapted from code by Matthew Dowst / @mdowst
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Import-AzToolsModuleVersionCheck.md
 	#>
 	[CmdletBinding()]
 	[OutputType([boolean])]

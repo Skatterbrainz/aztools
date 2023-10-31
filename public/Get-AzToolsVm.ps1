@@ -47,7 +47,8 @@ function Get-AzToolsVm {
 		Group2     AZEPRODAW02        Windows Server 2016 Datacenter               VM running
 		Group2     AZEPRODDB01        Windows Server 2016 Datacenter               VM running
 	```
-	.NOTES
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsVm.md
 	#>
 	[CmdletBinding()]
 	param (

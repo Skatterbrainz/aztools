@@ -18,6 +18,8 @@ function Import-AzToolsAutomationModule {
 		Import-AzToolsAutomationModule -ModuleName az.accounts -ModuleVersion 2.12.1
 
 		Imports version 2.12.1 from the PowerShell Gallery
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Import-AzToolsAutomationModule.md
 	#>
 	[CmdletBinding()]
 	[OutputType([Microsoft.Azure.Commands.Automation.Model.Module])]

@@ -17,6 +17,8 @@ function Update-AzToolsAutomationModule {
 		Update-AzToolsAutomationModule -Name ExchangeOnlineManagement -UpdateModule
 	.NOTES
 		This function is heavily adapted from code written by Matthew Dowst (@mdowst), I just made miniscule tweaks to fit this module
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Update-AzToolsAutomationModule.md
 	#>
 	[CmdletBinding()]
 	param (

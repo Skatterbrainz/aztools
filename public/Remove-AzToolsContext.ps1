@@ -12,6 +12,8 @@ function Remove-AzToolsContext {
 	.EXAMPLE
 		Remove-AzToolsContext -NoConfirm
 		Displays a gridview to select context objects to remove, then removes each without confirmation
+	.LINK
+		https://github.com/Skatterbrainz/aztools/tree/main/docs/Remove-AzToolsContext.md
 	#>
 	[CmdletBinding()]
 	param (
