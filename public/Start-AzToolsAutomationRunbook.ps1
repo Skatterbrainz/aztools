@@ -16,6 +16,8 @@ function Start-AzToolsAutomationRunbook {
 	.PARAMETER MaxWaitSeconds
 		Optional. If [NoWait] is not referenced, this limits the wait time to the specified number of seconds.
 		Default is 180 seconds (3 minutes)
+	.PARAMETER DailyQuote
+		Optional. Show daily random ZenQuote (see Notes)
 	.EXAMPLE
 		Start-AzToolsAutomationRunbook
 
@@ -36,6 +38,11 @@ function Start-AzToolsAutomationRunbook {
 	.NOTES
 		Output includes explicit return values from runbook, as well as: HasErrors,RowError,RowState,Table
 		so you will likely want to filter the output to only the explicit return properties.
+		Uses ZenQuotes API / reference: https://docs.zenquotes.io/zenquotes-documentation/
+
+		ZenQuotes usage limits: Requests are restricted by IP to 5 per 30 second period by default.
+		An API key or registered IP is required for unlimited access and to enable Access-Control-Allow-Origin headers.
+		We require that you show attribution with a link back to https://zenquotes.io/ when using the free version of this API.
 	.LINK
 		https://github.com/Skatterbrainz/aztools/tree/main/docs/Start-AzToolsAutomationRunbook.md
 	#>
@@ -45,7 +52,8 @@ function Start-AzToolsAutomationRunbook {
 		[parameter()][string]$Name,
 		[parameter()][string][ValidateSet('Azure','HybridWorkerGroup')]$RunOn = 'Azure',
 		[parameter()][switch]$NoWait,
-		[parameter()][int32]$MaxWaitSeconds = 180
+		[parameter()][int32]$MaxWaitSeconds = 180,
+		[parameter()][switch]$DailyQuote
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }
@@ -67,8 +75,9 @@ function Start-AzToolsAutomationRunbook {
 				if (![string]::IsNullOrWhiteSpace($Name)) {
 					$runbook = $runbooks | Where-Object {$_.Name -eq $Name} | Select-Object -ExpandProperty Name
 				} else {
-					$rbook = $runbooks | Out-GridView -Title "Select Runbook to Execute" -OutputMode Single
-					if ($rbook) { $runbook = $rbook.Name }
+					Write-Host "Waiting for GridView selection: Runbook" -ForegroundColor Cyan
+					$rbook = $runbooks | Select-Object Name | Out-GridView -Title "Select Runbook to Execute" -OutputMode Single
+					if ($rbook) { $runbook = $rbook.Name } else { $runbook = $null }
 				}
 				Write-Verbose "Selected Runbook: $($runbook)"
 				if ($runbook) {
@@ -86,7 +95,13 @@ function Start-AzToolsAutomationRunbook {
 						$pval = $null
 						$pval = Read-Host -Prompt "Value for parameter [$rbParam]"
 						if (![string]::IsNullOrEmpty($pval)) {
-							$rbParamSet["$rbParam"] = "$pval"
+							if ($pval -eq "True") {
+								$rbParamSet["$rbParam"] = $True
+							} elseif ($pval -eq "False") {
+								$rbParamSet["$rbParam"] = $False
+							} else {
+								$rbParamSet["$rbParam"] = $pval
+							}
 						}
 					}
 					if ($RunOn -ne 'Azure') {
@@ -97,6 +112,7 @@ function Start-AzToolsAutomationRunbook {
 						Write-Verbose "Getting Hybrid Runbook Worker Groups..."
 						$hwgroups = Get-AzAutomationHybridRunbookWorkerGroup @params
 						$hwg = $hwgroups | Select-Object -ExpandProperty Name
+						Write-Host "Waiting for GridView selection: Hybrid Worker Group" -ForegroundColor Cyan
 						$hwgroup = $hwg | Out-GridView -Title "Select Hybrid Runbook Worker Group" -OutputMode Single
 					}
 					$params = @{
@@ -116,9 +132,21 @@ function Start-AzToolsAutomationRunbook {
 						Write-Verbose "Appending runbook parameter set..."
 						$params['Parameters'] = $rbParamSet
 					} else {
-						Write-Verobse "No input parameters being included"
+						Write-Verbose "No input parameters being included"
 					}
-					Write-Host "Submitting Runbook start request: $($runbook)"
+					if ($DailyQuote) {
+						$zquote = Invoke-RestMethod -Uri "https://zenquotes.io/api/quotes" -UseBasicParsing -Method Get
+						#$zquote = (Invoke-WebRequest -UseBasicParsing -Uri "https://zenquotes.io/api/quotes").Content | ConvertFrom-Json
+						$zcount = $zquote.Count
+						$zitem = Get-Random -Maximum $zcount
+						Write-Host "Daily quote: `"$($zquote[$zitem].q)`" - $($zquote[$zitem].a)" -ForegroundColor Magenta
+						Write-Host "Source = ZenQuotes: https://zenquotes.io/" -ForegroundColor Magenta
+					}
+					Write-Host "Submitting Runbook start request: $($runbook)" -ForegroundColor Cyan
+					if ($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent) {
+						Write-Verbose "Runbook parameter set..."
+						$params
+					}
 					Start-AzAutomationRunbook @params
 				}
 			} else {
