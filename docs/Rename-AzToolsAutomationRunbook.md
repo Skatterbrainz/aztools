@@ -14,7 +14,8 @@ Rename an Azure Automation Runbook
 
 ```
 Rename-AzToolsAutomationRunbook [-SelectContext] [[-Source] <String>] [[-NewName] <String>]
- [[-Description] <String>] [-CopyTags] [<CommonParameters>]
+ [[-Description] <String>] [-CopyTags] [-KeepOriginal] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -105,7 +106,9 @@ Accept wildcard characters: False
 ```
 
 ### -CopyTags
-{{ Fill CopyTags Description }}
+Optional.
+Tags to assign to new runbook.
+If blank, will be copied from the source runbook.
 
 ```yaml
 Type: SwitchParameter
@@ -115,6 +118,39 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -KeepOriginal
+Optional.
+Copies source to new runbook without deleting the original.
+Default behavior is to delete the 
+original runbook after the copy is created.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

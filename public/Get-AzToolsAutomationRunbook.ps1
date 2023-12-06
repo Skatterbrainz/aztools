@@ -69,7 +69,7 @@ function Get-AzToolsAutomationRunbook {
 					ResourceGroupName = $rgname
 					AutomationAccountName = $aaname
 				}
-				$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name #| Select-Object Name,RunbookType,Location,State,LastModifiedTime
+				$runbooks = Get-AzAutomationRunbook @params | Sort-Object Name
 				if ($Filter -ne "*") {
 					Write-Verbose "Filtering results on: $Filter"
 					$runbooks = $runbooks | Where-Object { $_.Name -like $Filter }

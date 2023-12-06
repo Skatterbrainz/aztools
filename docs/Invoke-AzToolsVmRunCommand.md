@@ -15,7 +15,7 @@ Invoke the "Run Command" feature on an Azure Virtual Machine using PowerShell
 ```
 Invoke-AzToolsVmRunCommand [[-ScriptContent] <String>] [[-ScriptFile] <String>] [-SelectContext]
  [-SelectSubscription] [[-RunCommandName] <String>] [[-WaitSeconds] <Int32>] [[-TryCount] <Int32>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -154,6 +154,21 @@ Aliases:
 Required: False
 Position: 5
 Default value: 10
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

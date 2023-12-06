@@ -13,7 +13,7 @@ schema: 2.0.0
 
 ```
 Get-AzToolsCostSummary [[-SubscriptionID] <String>] [[-StartDate] <String>] [[-EndDate] <String>]
- [[-CostMetric] <String>] [<CommonParameters>]
+ [[-CostMetric] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -90,6 +90,21 @@ Aliases:
 Required: False
 Position: 4
 Default value: UsageQuantity
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

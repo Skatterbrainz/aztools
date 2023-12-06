@@ -1,14 +1,14 @@
 ---
 external help file: aztools-help.xml
 Module Name: aztools
-online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsCostSummary.md
+online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsSession.md
 schema: 2.0.0
 ---
 
 # Get-AzToolsSession
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Show Active AZTools context
 
 ## SYNTAX
 
@@ -17,26 +17,25 @@ Get-AzToolsSession
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Show details about current AZTools context, such as TenantID, SubscriptionID,
+Subscription Name, ResourceGroup Name and Automation Account Name
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
 ```
-
-{{ Add example description here }}
+Get-AzToolsSession
+```
 
 ## PARAMETERS
 
 ## INPUTS
 
-### None
-
 ## OUTPUTS
 
-### System.Object
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsSession.md](https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsSession.md)
+
