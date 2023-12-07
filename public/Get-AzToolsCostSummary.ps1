@@ -1,13 +1,25 @@
 function Get-AzToolsCostSummary {
 	<#
 	.SYNOPSIS
-		Get Latest Billing Invoice Summary
+		Get Billing Invoice Summary
 	.DESCRIPTION
-		Get Latest Billing Invoice Summary for each Azure Billing Account
+		Get Billing Invoice Summary for Azure Billing Account
 	.PARAMETER SelectContext
 		Optional. Prompt to select the Azure context (tenant/subscription)
 	.PARAMETER Latest
 		Optional. Return the latest invoice only. Default is to return all available invoices.
+	.EXAMPLE
+		Get-AzToolsCostSummary
+
+		Returns all available invoices for the current Azure context.
+	.EXAMPLE
+		Get-AzToolsCostSummary -SelectContext
+
+		Prompts to select Azure context, then returns all available invoices.
+	.EXAMPLE
+		Get-AzToolsCostSummary -Latest
+
+		Returns the latest invoice only.
 	.LINK
 		https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsCostSummary.md
 	#>
