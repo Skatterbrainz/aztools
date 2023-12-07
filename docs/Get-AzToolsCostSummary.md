@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-AzToolsCostSummary
 
 ## SYNOPSIS
-Get Latest Billing Invoice Summary
+Get Billing Invoice Summary
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-AzToolsCostSummary [-SelectContext] [-Latest] [-ProgressAction <ActionPrefer
 ```
 
 ## DESCRIPTION
-Get Latest Billing Invoice Summary for each Azure Billing Account
+Get Billing Invoice Summary for Azure Billing Account
 
 ## EXAMPLES
 
