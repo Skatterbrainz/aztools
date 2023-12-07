@@ -13,8 +13,9 @@ Start an Azure Automation Runbook
 ## SYNTAX
 
 ```
-Start-AzToolsAutomationRunbook [-SelectContext] [[-Name] <String>] [[-RunOn] <String>] [-NoWait]
- [[-MaxWaitSeconds] <Int32>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Start-AzToolsAutomationRunbook [-SelectContext] [[-Name] <String>] [[-RunOn] <String>]
+ [[-HybridWorkerGroup] <String>] [-NoWait] [[-MaxWaitSeconds] <Int32>] [-DailyQuote]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,7 +32,7 @@ Prompts for selecting Runbook, and input parameters (if any are found)
 
 ### EXAMPLE 2
 ```
-Start-AzToolsAutomationRunbook -Name "MyRunBook"
+Start-AzToolsAutomationRunbook -Name MyRunBook
 ```
 
 Runs MyRunBook.
@@ -39,7 +40,7 @@ Prompts for input parameters (if any are found)
 
 ### EXAMPLE 3
 ```
-Start-AzToolsAutomationRunbook -Name "MyRunBook" -RunOn HybridWorkerGroup
+Start-AzToolsAutomationRunbook -Name MyRunBook -RunOn HybridWorkerGroup
 ```
 
 Runs MyRunBook.
@@ -52,6 +53,14 @@ Start-AzToolsAutomationRunbook -SelectContext
 
 Prompts to select the Subscription, ResourceGroup, AutomationAccount and then
 prompts for Runbook, and input parameters (if any are found)
+
+### EXAMPLE 5
+```
+Start-AzToolsAutomationRunbook -Name MyRunBook -RunOn HybridWorkerGroup -HybridWorkerGroup HWG001
+```
+
+Prompts for input parameters only (if any are found) and runs the the runbook on 
+the specified hybrid worker group.
 
 ## PARAMETERS
 
@@ -106,6 +115,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -HybridWorkerGroup
+Optional.
+If RunOn = HybridWorkerGroup, this parameter specifies the name of the group.
+Default is global variable $AzToolsLastHybridWorkerGroup (if defined)
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: $AzToolsLastHybridWorkerGroup
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -NoWait
 Optional.
 Do not wait for completion.
@@ -133,8 +159,24 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 4
 Default value: 180
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DailyQuote
+Optional.
+Show daily random ZenQuote (see Notes)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -164,6 +206,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 Output includes explicit return values from runbook, as well as: HasErrors,RowError,RowState,Table
 so you will likely want to filter the output to only the explicit return properties.
+Uses ZenQuotes API / reference: https://docs.zenquotes.io/zenquotes-documentation/
+
+ZenQuotes usage limits: Requests are restricted by IP to 5 per 30 second period by default.
+An API key or registered IP is required for unlimited access and to enable Access-Control-Allow-Origin headers.
+We require that you show attribution with a link back to https://zenquotes.io/ when using the free version of this API.
 
 ## RELATED LINKS
 
