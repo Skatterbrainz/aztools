@@ -11,6 +11,9 @@ function Start-AzToolsAutomationRunbook {
 	.PARAMETER RunOn
 		Optional. Azure or HybridWorkerGroup. Default is Azure
 		If HybridWorkerGroup is selected, a GridView will be displayed for selecting the HybridWorkerGroup name.
+	.PARAMETER HybridWorkerGroup
+		Optional. If RunOn = HybridWorkerGroup, this parameter specifies the name of the group.
+		Default is global variable $AzToolsLastHybridWorkerGroup (if defined)
 	.PARAMETER NoWait
 		Optional. Do not wait for completion.
 	.PARAMETER MaxWaitSeconds
@@ -23,11 +26,11 @@ function Start-AzToolsAutomationRunbook {
 
 		Prompts for selecting Runbook, and input parameters (if any are found)
 	.EXAMPLE
-		Start-AzToolsAutomationRunbook -Name "MyRunBook"
+		Start-AzToolsAutomationRunbook -Name MyRunBook
 
 		Runs MyRunBook. Prompts for input parameters (if any are found)
 	.EXAMPLE
-		Start-AzToolsAutomationRunbook -Name "MyRunBook" -RunOn HybridWorkerGroup
+		Start-AzToolsAutomationRunbook -Name MyRunBook -RunOn HybridWorkerGroup
 
 		Runs MyRunBook. Prompts for input parameters (if any are found) and prompts for Hybrid worker group.
 	.EXAMPLE
@@ -35,6 +38,11 @@ function Start-AzToolsAutomationRunbook {
 
 		Prompts to select the Subscription, ResourceGroup, AutomationAccount and then
 		prompts for Runbook, and input parameters (if any are found)
+	.EXAMPLE
+		Start-AzToolsAutomationRunbook -Name MyRunBook -RunOn HybridWorkerGroup -HybridWorkerGroup HWG001
+
+		Prompts for input parameters only (if any are found) and runs the the runbook on 
+		the specified hybrid worker group.
 	.NOTES
 		Output includes explicit return values from runbook, as well as: HasErrors,RowError,RowState,Table
 		so you will likely want to filter the output to only the explicit return properties.
@@ -51,6 +59,7 @@ function Start-AzToolsAutomationRunbook {
 		[parameter()][switch]$SelectContext,
 		[parameter()][string]$Name,
 		[parameter()][string][ValidateSet('Azure','HybridWorkerGroup')]$RunOn = 'Azure',
+		[parameter()][string]$HybridWorkerGroup = $AzToolsLastHybridWorkerGroup,
 		[parameter()][switch]$NoWait,
 		[parameter()][int32]$MaxWaitSeconds = 180,
 		[parameter()][switch]$DailyQuote
@@ -112,8 +121,17 @@ function Start-AzToolsAutomationRunbook {
 						Write-Verbose "Getting Hybrid Runbook Worker Groups..."
 						$hwgroups = Get-AzAutomationHybridRunbookWorkerGroup @params
 						$hwg = $hwgroups | Select-Object -ExpandProperty Name
-						Write-Host "Waiting for GridView selection: Hybrid Worker Group" -ForegroundColor Cyan
-						$hwgroup = $hwg | Out-GridView -Title "Select Hybrid Runbook Worker Group" -OutputMode Single
+						if (![string]::IsNullOrWhiteSpace($AzToolsLastHybridWorkerGroup)) {
+							$hwgroup = $AzToolsLastHybridWorkerGroup
+						} elseif (![string]::IsNullOrWhiteSpace($HybridWorkerGroup)) {
+							$hwgroup = $HybridWorkerGroup
+						} else {
+							Write-Host "Waiting for GridView selection: Hybrid Worker Group" -ForegroundColor Cyan
+							$hwgroup = $hwg | Out-GridView -Title "Select Hybrid Runbook Worker Group" -OutputMode Single
+							if ($hwgroup) {
+								$global:AzToolsLastHybridWorkerGroup = $hwgroup
+							}
+						}
 					}
 					$params = @{
 						Name                  = $runbook
@@ -147,7 +165,8 @@ function Start-AzToolsAutomationRunbook {
 						Write-Verbose "Runbook parameter set..."
 						$params
 					}
-					Start-AzAutomationRunbook @params
+					Start-AzAutomationRunbook @params |
+						Select-Object -Property * -ExcludeProperty HasErrors,RowError,RowState,ItemArray,Table
 				}
 			} else {
 				Write-Warning "Automation Account not yet selected"
