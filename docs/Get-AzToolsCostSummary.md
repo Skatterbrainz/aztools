@@ -8,16 +8,16 @@ schema: 2.0.0
 # Get-AzToolsCostSummary
 
 ## SYNOPSIS
+Get Latest Billing Invoice Summary
 
 ## SYNTAX
 
 ```
-Get-AzToolsCostSummary [[-SubscriptionID] <String>] [[-StartDate] <String>] [[-EndDate] <String>]
- [[-CostMetric] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AzToolsCostSummary [-SelectContext] [-Latest] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get Latest Billing Invoice Summary for each Azure Billing Account
 
 ## EXAMPLES
 
@@ -30,66 +30,35 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -SubscriptionID
+### -SelectContext
 Optional.
+Prompt to select the Azure context (tenant/subscription)
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
-Default value: None
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -StartDate
+### -Latest
 Optional.
-Default = 7 days ago
+Return the latest invoice only.
+Default is to return all available invoices.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
-Default value: $((Get-Date).AddDays(-7).ToString('yyyy-MM-dd'))
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EndDate
-Optional.
-Default = Current date
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: $(Get-Date).ToString('yyyy-MM-dd')
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CostMetric
-PretaxCost or UsageQuantity
-Cost metric to sum for total estimate cost
-Default = UsageQuantity
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: UsageQuantity
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -117,13 +86,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-I don't know.
-No matter what I throw at this I don't seem to get back numbers
-that match the portal.
-I've tried Get-AzBilling\<abcdef\> cmdlets also, but none
-seem to come close to the costs in the portal.
-Maybe I need to inhale more paint
-fumes or eat kitty litter or something.
 
 ## RELATED LINKS
 
