@@ -25,7 +25,7 @@ function Get-AzToolsCostSummary {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")][switch]$SelectContext,
 		[parameter()][switch]$Latest
 	)
 	if ($SelectContext) { Switch-AzToolsContext }

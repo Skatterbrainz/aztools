@@ -15,7 +15,8 @@ function Get-AzToolsAutomationModule {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

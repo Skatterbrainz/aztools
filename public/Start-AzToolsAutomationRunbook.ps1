@@ -56,13 +56,20 @@ function Start-AzToolsAutomationRunbook {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][string]$Name,
-		[parameter()][string][ValidateSet('Azure','HybridWorkerGroup')]$RunOn = 'Azure',
-		[parameter()][string]$HybridWorkerGroup = $AzToolsLastHybridWorkerGroup,
-		[parameter()][switch]$NoWait,
-		[parameter()][int32]$MaxWaitSeconds = 180,
-		[parameter()][switch]$DailyQuote
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Runbook Name or blank to prompt for Name using Gridview")]
+			[string]$Name,
+		[parameter(Mandatory=$False,HelpMessage="Execute runbook on Azure or Hybrid Worker Group")]
+			[string][ValidateSet('Azure','HybridWorkerGroup')]$RunOn = 'Azure',
+		[parameter(Mandatory=$False,HelpMessage="Hybrid Worker Group Name if RunOn is HybridWorkerGroup")]
+			[string]$HybridWorkerGroup = $AzToolsLastHybridWorkerGroup,
+		[parameter(Mandatory=$False,HelpMessage="Do not wait for runbook to complete processing")]
+			[switch]$NoWait,
+		[parameter(Mandatory=$False,HelpMessage="Maximum seconds to wait for runbook to complete")]
+			[int32]$MaxWaitSeconds = 180,
+		[parameter(Mandatory=$False,HelpMessage="Show daily quote to keep you entertained")]
+			[switch]$DailyQuote
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

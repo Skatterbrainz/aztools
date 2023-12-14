@@ -14,7 +14,8 @@ function Get-AzToolsAutomationModuleDetails {
 	[CmdletBinding()]
 	[OutputType([object])]
 	param(
-		[parameter(Mandatory=$true)][string]$ModuleName
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext
 	)
 	$Module = Find-Module -Name $ModuleName
 	$Module.Dependencies | ForEach-Object { Get-AzModuleDetails -ModuleName $_['Name'] }

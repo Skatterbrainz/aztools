@@ -20,6 +20,7 @@ function Get-AzToolsSession {
 			SubscriptionID    = $ctx.Subscription.Id
 			ResourceGroupName = $($global:AzToolsLastResourceGroup | Select-Object -ExpandProperty ResourceGroupname)
 			AutomationAccount = $($global:AzToolsLastAutomationAccount | Select-Object -ExpandProperty AutomationAccountName)
+			Runbook           = $($global:AzToolsLastRunbook | Select-Object -ExpandProperty Name)
 		}
 	)
 	$res | ConvertTo-Json

@@ -17,8 +17,10 @@ function Switch-AzToolsContext {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][string]$Name,
-		[parameter()][switch]$List
+		[parameter(Mandatory=$False,HelpMessage="Context Name or blank to prompt for Selection using a GridView")]
+			[string]$Name,
+		[parameter(Mandatory=$False,HelpMessage="Show a list of all cached Azure connection context entries")]
+			[switch]$List
 	)
 	Write-Host "Current Az Context: $(Get-AzContext | Select-Object -ExpandProperty Name)" -ForegroundColor Cyan
 	$ctx = $null

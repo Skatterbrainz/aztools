@@ -15,8 +15,11 @@ function Get-AzToolsAutomationJobOutput {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter(Mandatory)][string]$JobId,
-		[parameter()][switch]$SelectContext
+		[parameter(Mandatory=$True,HelpMessage="Azure Automation Job ID")]
+			[ValidatePattern('(\{|\()?[A-Za-z0-9]{4}([A-Za-z0-9]{4}\-?){4}[A-Za-z0-9]{12}(\}|\()?')]
+			[string]$JobId,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

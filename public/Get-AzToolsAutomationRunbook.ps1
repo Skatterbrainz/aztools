@@ -46,12 +46,18 @@ function Get-AzToolsAutomationRunbook {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][string]$Filter = "*",
-		[parameter()][string]$TagName,
-		[parameter()][string]$TagValue,
-		[parameter()][switch]$Export,
-		[parameter()][string]$ExportPath = "$($env:USERPROFILE)\desktop"
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Filter by Name or * for All Runbooks")]
+			[string]$Filter = "*",
+		[parameter(Mandatory=$False,HelpMessage="Filter by Azure Resource Tag Name")]
+			[string]$TagName,
+		[parameter(Mandatory=$False,HelpMessage="Filter by Azure Resource Tag Value")]
+			[string]$TagValue,
+		[parameter(Mandatory=$False,HelpMessage="Export Runbooks to local files")]
+			[switch]$Export,
+		[parameter(Mandatory=$False,HelpMessage="Path to Export Runbook files")]
+			[string]$ExportPath = "$($env:USERPROFILE)\desktop"
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

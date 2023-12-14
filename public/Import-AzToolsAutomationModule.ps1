@@ -24,9 +24,12 @@ function Import-AzToolsAutomationModule {
 	[CmdletBinding()]
 	[OutputType([Microsoft.Azure.Commands.Automation.Model.Module])]
 	param (
-		[parameter(Mandatory)][string]$ModuleName,
-		[parameter()][string]$ModuleVersion,
-		[parameter()][switch]$SelectContext
+		[parameter(Mandatory=$True,HelpMessage="Name of PowerShell Module")]
+			[ValidateNotNullOrEmpty()][string]$ModuleName,
+		[parameter(Mandatory=$False,HelpMessage="Module Version to update to, or blank for latest")]
+			[string]$ModuleVersion,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

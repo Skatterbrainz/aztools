@@ -15,8 +15,10 @@ Function Get-AzToolsAutomationLastJob {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter(Mandatory)][string]$RunbookName,
-		[parameter()][switch]$SelectContext
+		[parameter(Mandatory=$False,HelpMessage="Runbook Name")]
+			[string]$RunbookName,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

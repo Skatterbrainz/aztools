@@ -1,48 +1,34 @@
 ---
 external help file: aztools-help.xml
 Module Name: aztools
-online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationLastJob.md
+online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationVariable.md
 schema: 2.0.0
 ---
 
-# Get-AzToolsAutomationLastJob
+# Get-AzToolsAutomationVariable
 
 ## SYNOPSIS
-Get date and time of most recent Runbook job execution
+Get Azure Automation Account Variables
 
 ## SYNTAX
 
 ```
-Get-AzToolsAutomationLastJob [[-RunbookName] <String>] [-SelectContext] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-AzToolsAutomationVariable [-SelectContext] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the date and time of the most recent Azure Automation Runbook job execution
+Get and/or export Azure Automation Account Variables
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-AzToolsAutomationLastJob -RunbookName "Get-MachinesByTag"
+Get-AzToolsAutomationVariable
 ```
+
+Returns all variables in the active Automation Account
 
 ## PARAMETERS
-
-### -RunbookName
-Name of runbook to query last job execution
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -SelectContext
 Optional.
@@ -86,5 +72,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationLastJob.md](https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationLastJob.md)
+[https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationVariable.md](https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationVariable.md)
 

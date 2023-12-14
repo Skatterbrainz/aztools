@@ -17,7 +17,8 @@ function Remove-AzToolsContext {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$NoConfirm
+		[parameter(Mandatory=$False,HelpMessage="Do not prompt for confirmation")]
+			[switch]$NoConfirm
 	)
 	$CurrentContextName = $(Get-AzContext | Select-Object -ExpandProperty Name)
 	Write-Host "Current Az Context: $CurrentContextName" -ForegroundColor Cyan

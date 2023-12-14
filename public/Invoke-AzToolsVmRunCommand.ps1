@@ -36,13 +36,20 @@ function Invoke-AzToolsVmRunCommand  {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][string]$ScriptContent,
-		[parameter()][string]$ScriptFile,
-		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$SelectSubscription,
-		[parameter()][string]$RunCommandName = "AzToolsRunCommand",
-		[parameter()][int32]$WaitSeconds = 10,
-		[parameter()][int32]$TryCount = 10
+		[parameter(Mandatory=$False,HelpMessage="Script Content to execute on remote machine")]
+			[string]$ScriptContent,
+		[parameter(Mandatory=$False,HelpMessage="Script file to import an excute on remote machine")]
+			[string]$ScriptFile,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Select Subscription to query for remote machines")]
+			[switch]$SelectSubscription,
+		[parameter(Mandatory=$False,HelpMessage="Name of Run Command. Default is AzToolsRunCommand")]
+			[string]$RunCommandName = "AzToolsRunCommand",
+		[parameter(Mandatory=$False,HelpMessage="Number of seconds to pause per wait cycle")]
+			[int32]$WaitSeconds = 10,
+		[parameter(Mandatory=$False,HelpMessage="Number of wait cycles to return result. Total time is (TryCount * WaitSeconds)")]
+			[int32]$TryCount = 10
 	)
 	# $tryCount * $waitSeconds = totalTime to wait if job doesn't finish
 	if ($SelectContext) { Switch-AzToolsContext }

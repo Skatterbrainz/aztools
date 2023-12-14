@@ -16,8 +16,10 @@ Function Invoke-AzToolsModuleVersionCheck {
 	[CmdletBinding()]
 	[OutputType([boolean])]
 	param (
-		[parameter(Mandatory=$true)][string]$ModuleName,
-		[parameter(Mandatory=$true)][string]$MinimumVersion
+		[parameter(Mandatory=$true,HelpMessage="Name of PowerShell Module")]
+			[ValidateNotNullOrEmpty()][string]$ModuleName,
+		[parameter(Mandatory=$true,HelpMessage="Minimum Required Version of Module to check for")]
+			[string]$MinimumVersion
 	)
 	try {
 		if ($global:AzToolsLastAutomationAccount -and $global:AzToolsLastResourceGroup) {

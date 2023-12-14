@@ -21,8 +21,10 @@ function Get-AzToolsAutomationHybridWorker {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][int]$ThresholdMinutes = 30
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Max minutes to consider hybrid worker is offline")]
+			[int]$ThresholdMinutes = 30
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AztoolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

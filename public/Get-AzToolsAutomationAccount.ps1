@@ -20,8 +20,10 @@ function Get-AzToolsAutomationAccount {
 	#>
 	[CmdletBinding()]
 	param(
-		[parameter()][switch]$SelectContext,
-		[parameter()][switch]$Detailed
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Show Detailed results")]
+			[switch]$Detailed
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

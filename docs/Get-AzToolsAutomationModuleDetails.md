@@ -13,8 +13,7 @@ Get the module details from the PowerShell Gallery and returns any dependencies
 ## SYNTAX
 
 ```
-Get-AzToolsAutomationModuleDetails [-ModuleName] <String> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-AzToolsAutomationModuleDetails [-SelectContext] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,17 +28,17 @@ Get-AzToolsAutomationModuleDetails -ModuleName "az.accounts"
 
 ## PARAMETERS
 
-### -ModuleName
-The name of the module to look up
+### -SelectContext
+Select Azure Context
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: 1
-Default value: None
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -21,12 +21,26 @@ Get Billing Invoice Summary for Azure Billing Account
 
 ## EXAMPLES
 
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+### EXAMPLE 1
+```
+Get-AzToolsCostSummary
 ```
 
-{{ Add example description here }}
+Returns all available invoices for the current Azure context.
+
+### EXAMPLE 2
+```
+Get-AzToolsCostSummary -SelectContext
+```
+
+Prompts to select Azure context, then returns all available invoices.
+
+### EXAMPLE 3
+```
+Get-AzToolsCostSummary -Latest
+```
+
+Returns the latest invoice only.
 
 ## PARAMETERS
 

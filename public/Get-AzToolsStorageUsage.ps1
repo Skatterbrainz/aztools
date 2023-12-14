@@ -20,9 +20,12 @@ function Get-AzToolsStorageUsage {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][string]$Name = "",
-		[parameter()][switch]$SelectContext,
-		[parameter()][string][ValidateSet('CurrentSubscription','AllSubscriptions')]$Scope = 'CurrentSubscription'
+		[parameter(Mandatory=$False,HelpMessage="Storage Account Name, or blank for All")]
+			[string]$Name = "",
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Current Subscription, or All Subscriptions")]
+			[string][ValidateSet('CurrentSubscription','AllSubscriptions')]$Scope = 'CurrentSubscription'
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	try {

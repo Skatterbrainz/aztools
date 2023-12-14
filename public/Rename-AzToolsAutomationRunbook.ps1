@@ -32,12 +32,18 @@ function Rename-AzToolsAutomationRunbook {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
-		[parameter()][string]$Source,
-		[parameter()][string]$NewName,
-		[parameter()][string]$Description,
-		[parameter()][switch]$CopyTags,
-		[parameter()][switch]$KeepOriginal
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Original or Source Name of Runbook to be renamed")]
+			[string]$Source,
+		[parameter(Mandatory=$False,HelpMessage="New Name to apply to Runbook")]
+			[string]$NewName,
+		[parameter(Mandatory=$False,HelpMessage="New Description for Runbook. Default is to use the existing Description")]
+			[string]$Description,
+		[parameter(Mandatory=$False,HelpMessage="Copy Azure Resource Tags to new Runbook")]
+			[switch]$CopyTags,
+		[parameter(Mandatory=$False,HelpMessage="Keep original Runbook, or Copy instead of Rename")]
+			[switch]$KeepOriginal
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

@@ -34,15 +34,22 @@ function Get-AzToolsAutomationJobs {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter()][switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
 		[parameter()][string]
-		[ValidateSet('Activating','Completed','Failed','Queued','Resuming','Running','Starting','Stopped','Stopping','Suspended','Suspending')]$JobStatus = 'Running',
-		[parameter()][datetime]$StartTime,
-		[parameter()][datetime]$EndTime,
-		[parameter()][string]$RunbookName,
-		[parameter()][switch]$ShowOutput,
-		[parameter()][int]$ShowLimit = 10,
-		[parameter()][switch]$StopProcessing
+			[ValidateSet('Activating','Completed','Failed','Queued','Resuming','Running','Starting','Stopped','Stopping','Suspended','Suspending')]$JobStatus = 'Running',
+		[parameter(Mandatory=$False,HelpMessage="Filter by Job Start Time")]
+			[datetime]$StartTime,
+		[parameter(Mandatory=$False,HelpMessage="Filter by Job End Time")]
+			[datetime]$EndTime,
+		[parameter(Mandatory=$False,HelpMessage="Azure Automation Account Runbook Name")]
+			[string]$RunbookName,
+		[parameter(Mandatory=$False,HelpMessage="Show Job Output")]
+			[switch]$ShowOutput,
+		[parameter(Mandatory=$False,HelpMessage="Limit Job Output. Default is 10")]
+			[int]$ShowLimit = 10,
+		[parameter(Mandatory=$False,HelpMessage="Stop Processing a suspended or running job")]
+			[switch]$StopProcessing
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	if (!$global:AzToolsLastSubscription -or $SelectContext) { Select-AzToolsSubscription }

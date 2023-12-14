@@ -52,11 +52,16 @@ function Get-AzToolsVm {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter(Mandatory=$true)][string]$TagName,
-		[parameter(Mandatory=$false)][string]$TagValue = "",
-		[parameter(Mandatory=$false)][switch]$SelectContext,
-		[parameter(Mandatory=$false)][switch]$AllSubscriptions,
-		[parameter(Mandatory=$false)][string]$SubscriptionId
+		[parameter(Mandatory=$true,HelpMessage="Azure resource Tag name")]
+			[ValidateNotNullOrEmpty()][string]$TagName,
+		[parameter(Mandatory=$false,HelpMessage="Azure resource Tag value")]
+			[string]$TagValue = "",
+		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
+			[switch]$SelectContext,
+		[parameter(Mandatory=$false,HelpMessage="Query all Subscriptions")]
+			[switch]$AllSubscriptions,
+		[parameter(Mandatory=$false,HelpMessage="Subscription ID")]
+			[string]$SubscriptionId
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	try {

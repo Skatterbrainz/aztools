@@ -22,9 +22,12 @@ function Update-AzToolsAutomationModule {
 	#>
 	[CmdletBinding()]
 	param (
-		[parameter(Mandatory)][string]$Name,
-		[parameter()][switch]$UpdateModule,
-		[parameter()][switch]$SelectContext
+		[parameter(Mandatory=$True,HelpMessage="Module name, or blank for all Modules")]
+			[string]$Name,
+		[parameter(Mandatory=$False,HelpMessage="Update modules in Azure Automation Account")]
+			[switch]$UpdateModule,
+		[parameter(Mandatory=$False,HelpMessage="Select Azure context")]
+			[switch]$SelectContext
 	)
 	if ($SelectContext) { Switch-AzToolsContext }
 	$params = @{
