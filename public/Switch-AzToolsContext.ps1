@@ -29,7 +29,11 @@ function Switch-AzToolsContext {
 			Get-AzContext -ListAvailable | Sort-Object Name
 		} else {
 			$curctx = (Get-AzContext)
-			$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-GridView -Title "Select Profile" -OutputMode Single
+			if (Get-Module Microsoft.PowerShell.ConsoleGuiTools -ListAvailable) {
+				$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-ConsoleGridView -Title "Select Profile" -OutputMode Single
+			} else {
+				$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-GridView -Title "Select Profile" -OutputMode Single
+			}
 			if ($ctx) {
 				if ($curctx.Name -ne $ctx.Name) {
 					$global:AzToolsLastResourceGroup = $null
