@@ -36,6 +36,8 @@ function Get-AzToolsAutomationJobs {
 	param (
 		[parameter(Mandatory=$False,HelpMessage="Select Azure Context")]
 			[switch]$SelectContext,
+		[parameter(Mandatory=$False,HelpMessage="GUID for Automation Job")]
+			[guid]$JobID,
 		[parameter()][string]
 			[ValidateSet('Activating','Completed','Failed','Queued','Resuming','Running','Starting','Stopped','Stopping','Suspended','Suspending')]$JobStatus = 'Running',
 		[parameter(Mandatory=$False,HelpMessage="Filter by Job Start Time")]
@@ -62,7 +64,14 @@ function Get-AzToolsAutomationJobs {
 				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
 				if (!$global:AzToolsLastRunbook -or $SelectContext) { Select-AzToolsAutomationRunbook }
-				if ($global:AzToolsLastRunbook) {
+				if ($JobID) {
+					$params = @{
+						ResourceGroupName     = $rgname
+						AutomationAccountName = $aaname
+						Id = $JobID
+					}
+					Get-AzAutomationJob @params
+				} elseif ($global:AzToolsLastRunbook) {
 					$params = @{
 						ResourceGroupName     = $rgname
 						AutomationAccountName = $aaname
