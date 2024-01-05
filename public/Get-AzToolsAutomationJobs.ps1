@@ -70,7 +70,32 @@ function Get-AzToolsAutomationJobs {
 						AutomationAccountName = $aaname
 						Id = $JobID
 					}
-					Get-AzAutomationJob @params
+					$results = Get-AzAutomationJob @params
+					if ($ShowOutput) {
+						Write-Host "Returned $($results.Count) jobs (limiting to $ShowLimit latest jobs)" -ForegroundColor Cyan
+						if ($ShowLimit -gt 0) {
+							$results | Select-Object -First $ShowLimit | Foreach-Object { Get-AzToolsJobOutput -JobId $_.JobId }
+						} else {
+							$results | Foreach-Object { Get-AzToolsJobOutput -JobId $_.JobId }
+						}
+					}
+					if ($StopProcessing) {
+						if ($JobStatus -in ('Suspended')) {
+							$counter = 1
+							$total = $results.Count
+							$results | Foreach-Object {
+								try {
+									Stop-AzAutomationJob -Id $_.JobId -ResourceGroupName $_.ResourceGroupName -AutomationAccountName $_.AutomationAccountName -ErrorAction Stop
+									Write-Host "Stopped Job $counter of $total : $($_.JobId)"
+								} catch {
+									Write-Warning "Job Stop request $counter of $total failed. Error: $($_.Exception.Message)"
+								}
+								$counter++
+							}
+						}
+					} else {
+						$results
+					}
 				} elseif ($global:AzToolsLastRunbook) {
 					$params = @{
 						ResourceGroupName     = $rgname
