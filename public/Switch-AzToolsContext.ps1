@@ -42,7 +42,8 @@ function Switch-AzToolsContext {
 				}
 				Write-Host "Setting active context to: $($ctx.Name)" -ForegroundColor Yellow
 				$global:AztoolsLastSubscription = $ctx.Subscription
-				Set-AzContext $ctx
+				Set-AzToolsContext -Context $ctx
+				#Set-AzContext $ctx
 			}
 		}
 	} else {
@@ -50,7 +51,8 @@ function Switch-AzToolsContext {
 		if ($ctx) {
 			Write-Host "Setting active context to: $($ctx.Name)" -ForegroundColor Yellow
 			$global:AztoolsLastSubscription = $ctx.Subscription
-			Set-AzContext $ctx
+			#Set-AzContext $ctx
+			Set-AzToolsContext -Context $ctx
 		}
 	}
 }
