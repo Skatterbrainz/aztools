@@ -28,7 +28,7 @@ function Get-AzToolsAutomationModule {
 				$aaname = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
-				Get-AzAutomationModule -ResourceGroupName $rgname -AutomationAccountName $aaname | Select Name,Version | Sort-Object Name
+				Get-AzAutomationModule -ResourceGroupName $rgname -AutomationAccountName $aaname | Select-Object Name,Version | Sort-Object Name
 			}
 		}
 	}
