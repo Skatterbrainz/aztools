@@ -22,7 +22,12 @@ function Switch-AzToolsContext {
 		[parameter(Mandatory=$False,HelpMessage="Show a list of all cached Azure connection context entries")]
 			[switch]$List
 	)
-	Write-Host "Current Az Context: $(Get-AzContext | Select-Object -ExpandProperty Name)" -ForegroundColor Cyan
+	$ctx = (Get-AzContext)
+	if ($ctx) {
+		Write-Host "Current Az Context: $($ctx.Name)" -ForegroundColor Cyan
+	} else {
+		Connect-AzAccount
+	}
 	$ctx = $null
 	if ([string]::IsNullOrWhiteSpace($Name)) {
 		if ($List) {
