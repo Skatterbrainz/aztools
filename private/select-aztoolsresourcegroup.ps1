@@ -3,7 +3,7 @@ function Select-AzToolsResourceGroup {
 	param()
 	if ($global:AzToolsLastSubscription) {
 		if ((Get-AzContext).Subscription.Id -ne $AzToolsLastSubscription.Id) {
-			$null = Set-AzContext -SubscriptionObject $AzToolsLastSubscription
+			$null = Set-AzContext -Subscription $AzToolsLastSubscription.Id
 		}
 		Write-Verbose "Getting resource groups"
 		$rglist = Get-AzResourceGroup
