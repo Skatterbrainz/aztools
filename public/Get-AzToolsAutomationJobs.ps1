@@ -16,6 +16,8 @@ function Get-AzToolsAutomationJobs {
 		Optional. Filter jobs with status prior to [EndTime] (date and time)
 	.PARAMETER RunbookName
 		Optional. Filter jobs related to a specific Runbook
+	.PARAMETER SelectRunbook
+		Optional. Prompt for Runbook using gridview
 	.PARAMETER ShowOutput
 		Optional. Send Jobs to Get-AzToolsJobOutput for more detailed information
 	.PARAMETER ShowLimit
@@ -46,6 +48,8 @@ function Get-AzToolsAutomationJobs {
 			[datetime]$EndTime,
 		[parameter(Mandatory=$False,HelpMessage="Azure Automation Account Runbook Name")]
 			[string]$RunbookName,
+		[parameter(Mandatory=$False,HelpMessage="Select Runbook from Gridview")]
+			[switch]$SelectRunbook,
 		[parameter(Mandatory=$False,HelpMessage="Show Job Output")]
 			[switch]$ShowOutput,
 		[parameter(Mandatory=$False,HelpMessage="Limit Job Output. Default is 10")]
@@ -63,7 +67,7 @@ function Get-AzToolsAutomationJobs {
 				$aaname = $global:AzToolsLastAutomationAccount.AutomationAccountName
 				$rgname = $global:AzToolsLastResourceGroup.ResourceGroupName
 				Write-Verbose "Account=$((Get-AzContext).Account) Subscription=$($global:AzToolsLastSubscription.Id) ResourceGroup=$($rgname) AutomationAccount=$($aaname)"
-				if (!$global:AzToolsLastRunbook -or $SelectContext) { Select-AzToolsAutomationRunbook }
+				if (!$global:AzToolsLastRunbook -or $SelectContext -or $SelectRunbook) { Select-AzToolsAutomationRunbook }
 				if ($JobID) {
 					$params = @{
 						ResourceGroupName     = $rgname
