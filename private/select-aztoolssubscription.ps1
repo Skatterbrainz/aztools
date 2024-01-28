@@ -7,10 +7,12 @@ function Select-AzToolsSubscription {
 	if (Get-Module Microsoft.PowerShell.ConsoleGuiTools -ListAvailable) {
 		if ($azsub = $azsubs | Out-ConsoleGridView -Title "Select Subscription" -OutputMode Single) {
 			$global:AztoolsLastSubscription = $azsub
+			$global:AztoolsLastTenantID = $azsub.TenantId
 		}
 	} else {
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
 			$global:AztoolsLastSubscription = $azsub
+			$global:AztoolsLastTenantID = $azsub.TenantId
 		}
 	}
 }
