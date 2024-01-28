@@ -7,11 +7,26 @@ function Set-AzToolsContext {
 	if ($(Get-AzContext).Subscription.SubscriptionId -ne $Context.Subscription.Id) {
 		Write-Verbose "Setting AzContext to Subscription: $($Context.Subscription.ID)"
 		$null = Set-AzContext -SubscriptionId $Context.Subscription.Id -ErrorAction SilentlyContinue
+		$context = Get-AzContext
+		$valid = $false
+		if ($context) {
+			$token = Get-AzAccessToken
+			if ($token) {
+				if ($token.ExpiresOn -lt (Get-Date).AddMinutes(-5)) {
+					$valid = $true
+				}
+			}
+		}
+		if (!$valid) {
+			Connect-AzAccount
+		}
 		if ($(Get-AzContext).Subscription.SubscriptionId -ne $Context.Subscription.Id) {
 			Write-Verbose "Forcing a reset of AzContext"
 			Clear-AzContext -Scope CurrentUser -Force -ErrorAction SilentlyContinue
 			Clear-AzDefault -Force -ErrorAction SilentlyContinue
 			$null = Add-AzAccount -SubscriptionId $Context.Subscription.Id
+			$global:AztoolsLastSubscription = $context.Subscription
+			$global:AztoolsLastTenantID = $context.Tenant.Id
 		}
 	}
 }
