@@ -10,7 +10,7 @@ function Set-AzToolsContext {
 		$context = Get-AzContext
 		$valid = $false
 		if ($context) {
-			$token = Get-AzAccessToken
+			try {$token = Get-AzAccessToken -ErrorAction Stop} catch {}
 			if ($token) {
 				if ($token.ExpiresOn -lt (Get-Date).AddMinutes(-5)) {
 					$valid = $true
