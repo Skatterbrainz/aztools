@@ -35,9 +35,9 @@ function Switch-AzToolsContext {
 		} else {
 			$curctx = (Get-AzContext)
 			if (Get-Module Microsoft.PowerShell.ConsoleGuiTools -ListAvailable) {
-				$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-ConsoleGridView -Title "Select Profile" -OutputMode Single
+				$ctx = Get-AzContext -ListAvailable -ErrorAction SilentlyContinue | Sort-Object Name | Out-ConsoleGridView -Title "Select Profile" -OutputMode Single
 			} else {
-				$ctx = Get-AzContext -ListAvailable | Sort-Object Name | Out-GridView -Title "Select Profile" -OutputMode Single
+				$ctx = Get-AzContext -ListAvailable -ErrorAction SilentlyContinue | Sort-Object Name | Out-GridView -Title "Select Profile" -OutputMode Single
 			}
 			if ($ctx) {
 				if ($curctx.Name -ne $ctx.Name) {
@@ -52,7 +52,7 @@ function Switch-AzToolsContext {
 			}
 		}
 	} else {
-		$ctx = Get-AzContext -ListAvailable | Where-Object {$_.Name -eq $Name}
+		$ctx = Get-AzContext -ListAvailable -ErrorAction SilentlyContinue | Where-Object {$_.Name -eq $Name}
 		if ($ctx) {
 			Write-Host "Setting active context to: $($ctx.Name)" -ForegroundColor Yellow
 			$global:AztoolsLastSubscription = $ctx.Subscription
