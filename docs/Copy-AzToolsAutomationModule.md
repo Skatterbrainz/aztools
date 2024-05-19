@@ -1,48 +1,33 @@
 ---
 external help file: aztools-help.xml
 Module Name: aztools
-online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationJobOutput.md
+online version: https://github.com/Skatterbrainz/aztools/tree/main/docs/Copy-AzToolsAutomationModule.md
 schema: 2.0.0
 ---
 
-# Get-AzToolsAutomationJobOutput
+# Copy-AzToolsAutomationModule
 
 ## SYNOPSIS
-Get Azure Automation runbook job output
+Copy PowerShell modules from one Automation Account to another
 
 ## SYNTAX
 
 ```
-Get-AzToolsAutomationJobOutput [-JobId] <String> [-SelectContext] [<CommonParameters>]
+Copy-AzToolsAutomationModule [-SelectContext] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get Azure Automation runbook job output
+Copy PowerShell modules from one Automation Account to another
+Copy modules between subscriptions (eventually, I'm still working on that)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-AzToolsAutomationJobOutput -JobID abcdbf6d-1234-abcd-efgh-a5633676041c
+
 ```
 
 ## PARAMETERS
-
-### -JobId
-Required.
-Automation Job ID
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -SelectContext
 Optional.
@@ -71,5 +56,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationJobOutput.md](https://github.com/Skatterbrainz/aztools/tree/main/docs/Get-AzToolsAutomationJobOutput.md)
+[https://github.com/Skatterbrainz/aztools/tree/main/docs/Copy-AzToolsAutomationModule.md](https://github.com/Skatterbrainz/aztools/tree/main/docs/Copy-AzToolsAutomationModule.md)
 

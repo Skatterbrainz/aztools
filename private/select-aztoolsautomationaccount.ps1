@@ -8,10 +8,12 @@ function Select-AzToolsAutomationAccount {
 			if (Get-Module Microsoft.PowerShell.ConsoleGuiTools -ListAvailable) {
 				if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-ConsoleGridView -Title "Select Automation Account" -OutputMode Single) {
 					$global:AzToolsLastAutomationAccount = $aa
+					Write-Host "Selected > $($aa.AutomationAccountName) in Resource Group: $($aa.ResourceGroupName)" -ForegroundColor Cyan
 				}
 			} else {
 				if ($aa = $aalist | Select-Object AutomationAccountName,ResourceGroupName | Out-GridView -Title "Select Automation Account" -OutputMode Single) {
 					$global:AzToolsLastAutomationAccount = $aa
+					Write-Host "Selected > $($aa.AutomationAccountName) in Resource Group: $($aa.ResourceGroupName)" -ForegroundColor Cyan
 				}
 			}
 		} else {

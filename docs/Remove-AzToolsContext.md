@@ -13,7 +13,7 @@ Remove selected Azure Az Context sessions
 ## SYNTAX
 
 ```
-Remove-AzToolsContext [-NoConfirm] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Remove-AzToolsContext [-NoConfirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,14 +24,16 @@ Remove select Azure AzContext sessions for current user
 ### EXAMPLE 1
 ```
 Remove-AzToolsContext
-Displays a gridview to select context objects to remove, then prompts for confirmation on each before removing
 ```
+
+Displays a gridview to select context objects to remove, then prompts for confirmation on each before removing
 
 ### EXAMPLE 2
 ```
 Remove-AzToolsContext -NoConfirm
-Displays a gridview to select context objects to remove, then removes each without confirmation
 ```
+
+Displays a gridview to select context objects to remove, then removes each without confirmation
 
 ## PARAMETERS
 
@@ -46,21 +48,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

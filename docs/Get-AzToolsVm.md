@@ -14,7 +14,7 @@ Get Azure Virtual Machines by searching on Tag name/value or Extension
 
 ```
 Get-AzToolsVm [-TagName] <String> [[-TagValue] <String>] [-SelectContext] [-AllSubscriptions]
- [[-SubscriptionId] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-SubscriptionId] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -142,21 +142,6 @@ Aliases:
 
 Required: False
 Position: 3
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -11,10 +11,12 @@ function Select-AzToolsResourceGroup {
 		if (Get-Module Microsoft.PowerShell.ConsoleGuiTools -ListAvailable) {
 			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-ConsoleGridView -Title "Select Resource Group" -OutputMode Single) {
 				$global:AzToolsLastResourceGroup = $rg
+				Write-Host "Selected > $($rg.ResourceGroupName) in Location: $($rg.Location)" -ForegroundColor Cyan
 			}
 		} else {
 			if ($rg = $rglist | Select-Object ResourceGroupName,Location | Out-GridView -Title "Select Resource Group" -OutputMode Single) {
 				$global:AzToolsLastResourceGroup = $rg
+				Write-Host "Selected > $($rg.ResourceGroupName) in Location: $($rg.Location)" -ForegroundColor Cyan
 			}
 		}
 	} else {

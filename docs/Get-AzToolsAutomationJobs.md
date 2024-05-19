@@ -13,9 +13,9 @@ Get Azure Automation Account runbook jobs
 ## SYNTAX
 
 ```
-Get-AzToolsAutomationJobs [-SelectContext] [[-JobStatus] <String>] [[-StartTime] <DateTime>]
- [[-EndTime] <DateTime>] [[-RunbookName] <String>] [-ShowOutput] [[-ShowLimit] <Int32>] [-StopProcessing]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AzToolsAutomationJobs [-SelectContext] [[-JobID] <Guid>] [[-JobStatus] <String>] [[-StartTime] <DateTime>]
+ [[-EndTime] <DateTime>] [[-RunbookName] <String>] [-SelectRunbook] [-ShowOutput] [[-ShowLimit] <Int32>]
+ [-StopProcessing] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -56,6 +56,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -JobID
+GUID for Automation Job
+
+```yaml
+Type: Guid
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -JobStatus
 Optional.
 Job Status type:
@@ -68,7 +83,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 2
 Default value: Running
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -84,7 +99,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -100,7 +115,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -116,8 +131,24 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 5
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SelectRunbook
+Optional.
+Prompt for Runbook using gridview
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -149,7 +180,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: 10
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -167,21 +198,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

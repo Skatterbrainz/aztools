@@ -8,11 +8,13 @@ function Select-AzToolsSubscription {
 		if ($azsub = $azsubs | Out-ConsoleGridView -Title "Select Subscription" -OutputMode Single) {
 			$global:AztoolsLastSubscription = $azsub
 			$global:AztoolsLastTenantID = $azsub.TenantId
+			Write-Host "Selected > $($azsub.Name) in Tenant: $($azsub.TenantId)" -ForegroundColor Cyan
 		}
 	} else {
 		if ($azsub = $azsubs | Out-GridView -Title "Select Subscription" -OutputMode Single) {
 			$global:AztoolsLastSubscription = $azsub
 			$global:AztoolsLastTenantID = $azsub.TenantId
+			Write-Host "Selected > $($azsub.Name) in Tenant: $($azsub.TenantId)" -ForegroundColor Cyan
 		}
 	}
 }

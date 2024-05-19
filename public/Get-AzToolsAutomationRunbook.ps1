@@ -96,6 +96,7 @@ function Get-AzToolsAutomationRunbook {
 							OutputFolder          = $ExportPath
 							ResourceGroupName     = $rgname
 							AutomationAccountName = $aaname
+							Slot                  = "Published"
 							Force                 = $True
 						}
 						$null = Export-AzAutomationRunbook @params

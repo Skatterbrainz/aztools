@@ -15,7 +15,7 @@ Invoke the "Run Command" feature on an Azure Virtual Machine using PowerShell
 ```
 Invoke-AzToolsVmRunCommand [[-ScriptContent] <String>] [[-ScriptFile] <String>] [-SelectContext]
  [-SelectSubscription] [[-RunCommandName] <String>] [[-WaitSeconds] <Int32>] [[-TryCount] <Int32>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,14 +28,16 @@ Script code can be provided in-line or from a script file.
 ### EXAMPLE 1
 ```
 Invoke-AzToolsVmRunCommand -ScriptContent "Get-Service BITS"
-Prompts user to select VM's to run the command on from within the current subscription context.
 ```
+
+Prompts user to select VM's to run the command on from within the current subscription context.
 
 ### EXAMPLE 2
 ```
 Invoke-AzToolsVmRunCommand -ScriptContent "Get-Service BITS" -SelectSubscription
-Prompts user to select the Subscriptions to query VM's and then prompts to select the VM's to run the command on.
 ```
+
+Prompts user to select the Subscriptions to query VM's and then prompts to select the VM's to run the command on.
 
 ## PARAMETERS
 
@@ -154,21 +156,6 @@ Aliases:
 Required: False
 Position: 5
 Default value: 10
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -13,8 +13,7 @@ Get Azure Storage Account summary information
 ## SYNTAX
 
 ```
-Get-AzToolsStorageUsage [[-Name] <String>] [-SelectContext] [[-Scope] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-AzToolsStorageUsage [[-Name] <String>] [-SelectContext] [[-Scope] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -79,21 +78,6 @@ Aliases:
 Required: False
 Position: 2
 Default value: CurrentSubscription
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
